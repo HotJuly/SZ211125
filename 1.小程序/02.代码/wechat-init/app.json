@@ -2,10 +2,10 @@
     "pages": [
         "pages/index/index"
     ],
-    "window":{
+    "window": {
         "navigationBarBackgroundColor": "#f00",
         "navigationBarTitleText": "atguigu",
         "navigationStyle": "default"
-        
-    }
+    },
+    "sitemapLocation": "sitemap.json"
 }

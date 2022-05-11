@@ -1,4 +1,5 @@
 // pages/index/index.js
+// 调用Page函数,用于创建当前页面的实例对象,可以调用多次
 Page({
 
     /**
