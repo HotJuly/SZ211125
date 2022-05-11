@@ -15,10 +15,17 @@ Page({
                 3.如果接收到特殊的数据类型,例如:Set,Map
                     Set->Array
                     Map->Object
-     
      */
     data: {
         msg:"我是初始化数据"
+    },
+
+    handleClick(){
+        console.log('handleClick')
+    },
+
+    handleParent(){
+        console.log('handleParent')
     },
 
     /**
