@@ -17,7 +17,10 @@ Page({
                     Map->Object
      */
     data: {
-        msg:"我是初始化数据"
+        msg:"我是初始化数据",
+        
+        // 该属性用于存储用户个人信息
+        userInfo:{}
     },
 
     handleClick(){
@@ -25,9 +28,9 @@ Page({
         // wx.navigateTo({
         //     url: '/pages/log/log',
         //   })
-        wx.redirectTo({
-          url: '../log/log',
-        })
+        // wx.redirectTo({
+        //   url: '../log/log',
+        // })
     },
 
     handleParent(){
@@ -40,6 +43,22 @@ Page({
         })
     },
 
+    // 用于获取用户个人信息
+    getUserInfo(event){
+        console.log('getUserInfo',event)
+        /*
+            一个框架如果想要传递数据给开发者,无非就是两种渠道
+                1.this
+                2.形参
+        */
+       const userInfo = event.detail.userInfo;
+       if(userInfo){
+           this.setData({
+               userInfo:userInfo
+           })
+       }
+    },
+
     /**
      * 生命周期函数--监听页面加载
      */
@@ -50,34 +69,37 @@ Page({
         // })
         // console.log('msg2',this.data.msg)
         // this.data.msg="我是修改之后的数据"
+
+        console.log('--------onLoad---------')
+        // debugger
     },
 
     /**
      * 生命周期函数--监听页面初次渲染完成
      */
     onReady: function () {
-
+        console.log('--------onReady---------')
     },
 
     /**
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
-
+        console.log('--------onShow---------')
     },
 
     /**
      * 生命周期函数--监听页面隐藏
      */
     onHide: function () {
-
+        console.log('--------onHide---------')
     },
 
     /**
      * 生命周期函数--监听页面卸载
      */
     onUnload: function () {
-
+        console.log('--------onUnload---------')
     },
 
     /**
