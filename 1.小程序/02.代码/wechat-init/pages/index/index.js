@@ -18,7 +18,7 @@ Page({
      */
     data: {
         msg:"我是初始化数据",
-        
+
         // 该属性用于存储用户个人信息
         userInfo:{}
     },
@@ -59,6 +59,22 @@ Page({
        }
     },
 
+    // 用于测试最新版本的获取用户授权
+    getUserProfile(){
+        wx.getUserProfile({
+            desc:"用于测试用户授权功能",
+            success:(event)=>{
+                // console.log('event',event)
+                this.setData({
+                    userInfo:event.userInfo
+                })
+            },
+            fail(error){
+                console.log('error',error)
+            }
+        })
+    },
+
     /**
      * 生命周期函数--监听页面加载
      */
@@ -70,8 +86,17 @@ Page({
         // console.log('msg2',this.data.msg)
         // this.data.msg="我是修改之后的数据"
 
-        console.log('--------onLoad---------')
+        // console.log('--------onLoad---------')
         // debugger
+
+        // wx.getUserInfo({
+        //     success:(event)=>{
+        //         // console.log('event',event)
+        //         this.setData({
+        //             userInfo:event.userInfo
+        //         })
+        //     }
+        // })
     },
 
     /**

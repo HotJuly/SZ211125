@@ -11,6 +11,8 @@
  -->
 
 <view class="indexContainer">
+    <!-- <open-data type="userAvatarUrl"></open-data>
+    <open-data type="userNickName"></open-data> -->
     <image class="avatarUrl" src="{{userInfo.avatarUrl}}"></image>
     <text class="username" bindtap="changeMsg">你好,{{userInfo.nickName}}</text>
     <!-- <button class="welcome" @click="handleClick">欢迎来到尚硅谷</button> -->
@@ -21,9 +23,14 @@
     <!-- <view bindtap="handleParent">
         <button class="welcome" capture-catch:tap="handleClick">欢迎来到尚硅谷</button>
     </view> -->
-    <button 
+    <!-- <button 
     class="welcome" 
     open-type="getUserInfo" 
     bindgetuserinfo="getUserInfo"
+    >欢迎来到尚硅谷</button> -->
+    
+    <button 
+    class="welcome" 
+    bindtap="getUserProfile"
     >欢迎来到尚硅谷</button>
 </view>
