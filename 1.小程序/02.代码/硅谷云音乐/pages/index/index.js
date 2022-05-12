@@ -6,6 +6,8 @@ Page({
      */
     data: {
 
+        // 用于存储首页轮播图数据
+        banners:[]
     },
 
     /**
@@ -22,6 +24,9 @@ Page({
                 2.怎么发?
                     小程序中window没有数据,全局对象是wx
                     小程序中没有BOM和DOM,所以小程序中不能使用ajax发送请求
+                    
+                    request->请求
+                    response->响应
 
                     API:wx.request(Object object)
 
@@ -36,8 +41,11 @@ Page({
             data:{
                 type:2
             },
-            success(res){
-                console.log('success',res)
+            success:(res)=>{
+                // console.log('success',res)
+                this.setData({
+                    banners:res.data.banners
+                })
             }
         })
     },
