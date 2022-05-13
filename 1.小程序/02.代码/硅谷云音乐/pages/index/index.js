@@ -11,7 +11,10 @@ Page({
         banners:[],
 
         // 用于存储推荐歌曲相关数据
-        recommendList:[]
+        recommendList:[],
+
+        // 用于存储排行榜区域相关数据
+        topList:[]
     },
 
     /**
@@ -72,6 +75,42 @@ Page({
         this.setData({
             recommendList:result1.result
         })
+
+        const arr = [1,2,6,8,15];
+        let index = 0;
+        let topList = [];
+
+        while(index<arr.length){
+            const result2 = await myAxios('/top/list',{idx:arr[index++]});
+    
+            /*
+                splice(开始切割的下标,切割个数,新增内容)
+                slice(开始切割的下标,结束切割的下标)
+    
+                注意:splice会修改原数组,slice不会修改原数组
+            */
+            let obj = {
+                id:result2.playlist.id,
+                name:result2.playlist.name,
+                list:result2.playlist.tracks.slice(0,3).map((item)=>{
+                    let {id,name,picUrl:picUrl} = item.al;
+                    return {
+                        id,
+                        name,
+                        picUrl
+                    }
+                })
+            }
+    
+            topList.push(obj);
+            this.setData({
+                topList
+            })
+        }
+        // console.log(topList)
+        // this.setData({
+        //     topList
+        // })
     },
 
     /**
