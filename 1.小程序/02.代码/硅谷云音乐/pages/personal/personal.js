@@ -1,4 +1,5 @@
 // pages/personal/personal.js
+import myAxios from '../../utils/myAxios';
 Page({
 
     /**
@@ -13,7 +14,10 @@ Page({
         moveTransition:"",
 
         // 用于存储用户个人信息
-        userInfo:{}
+        userInfo:{},
+
+        // 用于存储最近的播放记录
+        playList:[]
     },
 
     // 用于监视用户手指按下操作
@@ -74,7 +78,7 @@ Page({
     /**
      * 生命周期函数--监听页面显示
      */
-    onShow: function () {
+    onShow:async function () {
         const userInfo = wx.getStorageSync("userInfo");
         // console.log(userInfo)
         if(userInfo){
@@ -82,6 +86,15 @@ Page({
                 userInfo
             })
         }
+
+        // 在onShow中发送请求的原因是,因为tabBar页面在切换的时候不会被销毁
+        const result = await myAxios('/user/record',{uid:userInfo.userId,type:1});
+
+        this.setData({
+            playList:result.weekData.map((item)=>{
+                return item.song;
+            })
+        })
     },
 
     /**

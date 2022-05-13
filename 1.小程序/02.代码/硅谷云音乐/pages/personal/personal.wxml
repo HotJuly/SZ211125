@@ -60,7 +60,37 @@
     </view>
 
     <view class="playContent">
-        <view class="noData">暂时没有数据</view>
+        <scroll-view wx:if="{{playList.length}}" class="playList" enable-flex scroll-x>
+          <view 
+          class="playItem"
+          wx:for="{{playList}}"
+          wx:key="id"
+          >
+            <image class="playImg" src="{{item.al.picUrl}}" lazy-load></image>
+          </view>
+        </scroll-view>
+        
+        <!-- <scroll-view class="playList" enable-flex scroll-x>
+          <image class="playImg" src="/static/images/dazuo.jpeg"></image>
+          <image class="playImg" src="/static/images/dazuo.jpeg"></image>
+          <image class="playImg" src="/static/images/dazuo.jpeg"></image>
+          <image class="playImg" src="/static/images/dazuo.jpeg"></image>
+          <image class="playImg" src="/static/images/dazuo.jpeg"></image>
+          <image class="playImg" src="/static/images/dazuo.jpeg"></image>
+          <image class="playImg" src="/static/images/dazuo.jpeg"></image>
+          <image class="playImg" src="/static/images/dazuo.jpeg"></image>
+          <image class="playImg" src="/static/images/dazuo.jpeg"></image>
+          <image class="playImg" src="/static/images/dazuo.jpeg"></image>
+          <image class="playImg" src="/static/images/dazuo.jpeg"></image>
+          <image class="playImg" src="/static/images/dazuo.jpeg"></image>
+          <image class="playImg" src="/static/images/dazuo.jpeg"></image>
+          <image class="playImg" src="/static/images/dazuo.jpeg"></image>
+          <image class="playImg" src="/static/images/dazuo.jpeg"></image>
+          <image class="playImg" src="/static/images/dazuo.jpeg"></image>
+          <image class="playImg" src="/static/images/dazuo.jpeg"></image>
+          <image class="playImg" src="/static/images/dazuo.jpeg"></image>
+        </scroll-view> -->
+        <view class="noData" wx:else>暂时没有数据</view>
       </view>
 
     <view class="cardList">
