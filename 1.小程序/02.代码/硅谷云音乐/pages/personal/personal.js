@@ -10,7 +10,10 @@ Page({
         moveDistance:0,
 
         // 用于控制页面元素的过渡效果
-        moveTransition:""
+        moveTransition:"",
+
+        // 用于存储用户个人信息
+        userInfo:{}
     },
 
     // 用于监视用户手指按下操作
@@ -72,7 +75,13 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
-
+        const userInfo = wx.getStorageSync("userInfo");
+        // console.log(userInfo)
+        if(userInfo){
+            this.setData({
+                userInfo
+            })
+        }
     },
 
     /**

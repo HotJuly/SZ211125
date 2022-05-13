@@ -55,10 +55,19 @@ Page({
         //         })
         //     }
         // })
-        const result = await myAxios('/banner',{type:2},"GET");
-        // console.log('result',result)
-        this.setData({
-            banners:result.banners
+
+
+        // 改版前的代码
+        // const result = await myAxios('/banner',{type:2},"GET");
+        // this.setData({
+        //     banners:result.banners
+        // })
+        
+        const result = myAxios('/banner',{type:2},"GET");
+        result.then((res)=>{
+            this.setData({
+                banners:res.banners
+            })
         })
 
         // wx.request({
