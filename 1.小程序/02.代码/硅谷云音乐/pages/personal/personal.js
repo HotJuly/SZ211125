@@ -85,16 +85,16 @@ Page({
             this.setData({
                 userInfo
             })
-        }
 
-        // 在onShow中发送请求的原因是,因为tabBar页面在切换的时候不会被销毁
-        const result = await myAxios('/user/record',{uid:userInfo.userId,type:1});
-
-        this.setData({
-            playList:result.weekData.map((item)=>{
-                return item.song;
+            // 在onShow中发送请求的原因是,因为tabBar页面在切换的时候不会被销毁
+            const result = await myAxios('/user/record',{uid:userInfo.userId,type:1});
+    
+            this.setData({
+                playList:result.weekData.map((item)=>{
+                    return item.song;
+                })
             })
-        })
+        }
     },
 
     /**
