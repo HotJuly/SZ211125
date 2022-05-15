@@ -14,7 +14,53 @@ Page({
         currentId: null,
 
         // 用于存储当前视频列表数据
-        videoList: []
+        videoList: [],
+
+        // 用于控制页面上所有video组件与image组件的显示切换
+        videoId:null,
+
+        // 用于控制scroll-view区域下拉动画的显示隐藏
+        isTrigger:false
+    },
+
+    // $myAxios: myAxios,
+
+    // 专门用于请求导航列表数据
+    async getNavList(){
+        const result = await this.$myAxios('/video/group/list');
+        this.setData({
+            navList: result.data.slice(0, 13),
+            currentId: result.data[0].id
+        })
+    },
+
+    // 用于监视用户下拉scroll-view区域操作
+    async handlePullDown(){
+        // console.log('handlePullDown')
+        await this.getVideoList();
+        this.setData({
+            isTrigger:false
+        })
+    },
+
+    // 用于监视用户点击图片操作,并控制页面上video组件和image组件的切换,以及视频自动播放
+    changeVideo(event){
+        // 1.获取到image组件的id属性
+        const videoId = event.currentTarget.id;
+
+        // 2.将数据更新到data中,使得对应的video组件显示出来(异步更新视图)
+        this.setData({
+            videoId
+        },()=>{
+            // setData第二个实参数据类型为函数
+            // 该函数会在视图更新之后才执行
+
+            // 3.获取到对应的video组件的上下文对象
+            const videoContext = wx.createVideoContext(videoId);
+
+            // 4.使用API控制video组件进行播放
+            videoContext.play();
+        })
     },
 
     // 用于请求对应分组的视频列表数据
@@ -117,11 +163,7 @@ Page({
     onShow: async function () {
         // 注意:video页面是tabBar页面,一般加载之后就不会卸载,所以尽可能使用onShow
 
-        const result = await myAxios('/video/group/list');
-        this.setData({
-            navList: result.data.slice(0, 13),
-            currentId: result.data[0].id
-        })
+        await this.getNavList();
 
         this.getVideoList();
     },
@@ -143,8 +185,12 @@ Page({
     /**
      * 页面相关事件处理函数--监听用户下拉动作
      */
-    onPullDownRefresh: function () {
+    onPullDownRefresh:async function () {
+        // console.log('onPullDownRefresh')
 
+        await this.getNavList();
+
+        this.getVideoList();
     },
 
     /**

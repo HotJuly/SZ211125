@@ -1,0 +1,20 @@
+常见功能:
+	1.下拉刷新
+
+需求:当用户下拉页面时,自动请求最新的数据进行展示(下拉刷新)
+拆解:
+	1.当用户下拉页面时
+		小程序中用户下拉页面的渠道有两种:
+			1.下拉页面
+				1.如何知道用户是否下拉了页面
+					-通过页面的js中具有onPullDownRefresh监听回调,可以监视到用户下拉页面操作
+					-用户想要成功触发onPullDownRefresh,必须开启当前页面的下拉动画
+						在app.json->window属性中添加, "enablePullDownRefresh":true属性可以开启所有页面的下拉动画
+						在页面的json配置中,添加"enablePullDownRefresh":true属性可以开启当前页面下拉动画
+
+			2.下拉scroll-view
+				1.如何知道用户是否下拉了scroll-view区域
+					-通过绑定事件refresherrefresh,可以监视到用户下拉scroll-view区域的操作
+
+	2.自动请求最新的数据进行展示
+		在之前的思路中,已经将请求当前分组数据,封装成为getVideoList了
