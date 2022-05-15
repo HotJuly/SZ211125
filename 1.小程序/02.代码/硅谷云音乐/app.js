@@ -1,21 +1,35 @@
 // app.js
 import myAxios from './utils/myAxios';
+import hasPermission from './utils/hasPermission';
+import utilConfig from './utils/config';
 App({
   onLaunch() {
-    // 当前生命周期会在app开始加载的时候执行,相当于是Page中的onLoad
-
-    // 此处的Page函数就是每个页面用来创建页面实例对象的那个Page
-    // 注意:整个小程序中只有这个Page函数,可以创建出页面的实例对象
-    // 此处只是地址值的传递
     const PageFn = Page;
-    // console.log(Page)
-
-    // 此处将Page变量变为全新的函数,而PageFn还存储着旧的Page函数
     Page = function(config){
 
       config.$myAxios = myAxios;
 
-      // 在新的Page中,使用旧的Page函数来创建页面的实例对象,并且返回,防止小程序崩溃
+      const showFn = config.onShow;
+
+      // 如果一个页面开始显示的时候,会调用配置对象中的onShow函数
+      config.onShow=function(){
+
+        // 判断当前正在显示的这个页面,是否需要做权限检测
+        // 如果当前页面的路径出现在utilConfig中的checkPermission数组中,就代表要做权限检测
+
+        // console.log(this.route)
+
+        if(utilConfig.checkPermission[this.route]){
+          // console.log(this.route)
+          if(!hasPermission())return;
+        }
+
+        // 此处的this是当前页面的实例对象
+        // console.log(this)
+        showFn.apply(this);
+        // showFn();
+      }
+
       return PageFn(config);
     }
   },

@@ -163,6 +163,9 @@ Page({
     onShow: async function () {
         // 注意:video页面是tabBar页面,一般加载之后就不会卸载,所以尽可能使用onShow
 
+        // if(!hasPermission())return;
+
+        // console.log(this)
         await this.getNavList();
 
         this.getVideoList();
@@ -203,7 +206,28 @@ Page({
     /**
      * 用户点击右上角分享
      */
-    onShareAppMessage: function () {
-
+    onShareAppMessage: function ({from,target}) {
+        // from代表当前触发转发的渠道
+        // target代表当前触发转发的button组件信息
+        // console.log('onShareAppMessage',from,target)
+        if(from==="menu"){
+            // 能进入这里就说明当前是通过右上角转发进入的
+            return{
+                title:"硅谷云音乐",
+                imageUrl:"/static/images/dazuo.jpeg",
+                path:"/pages/index/index"
+            }
+        }else{
+            // 能进入这里就说明当前是通过button组件转发进入的
+            // 注意点:自定义属性不支持大写英文
+            // console.log(target)
+            const {title,imageurl:imageUrl} = target.dataset;
+            console.log('imageUrl',target)
+            return{
+                title,
+                imageUrl,
+                path:"/pages/video/video"
+            }
+        }
     }
 })

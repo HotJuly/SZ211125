@@ -15,6 +15,8 @@
 			2.下拉scroll-view
 				1.如何知道用户是否下拉了scroll-view区域
 					-通过绑定事件refresherrefresh,可以监视到用户下拉scroll-view区域的操作
+					-用户想要成功触发refresherrefresh,必须开启scroll-view组件的下拉动画
+						在scroll-view组件上,添加标签属性refresher-enabled,来开启下拉动画
 
 	2.自动请求最新的数据进行展示
 		在之前的思路中,已经将请求当前分组数据,封装成为getVideoList了
