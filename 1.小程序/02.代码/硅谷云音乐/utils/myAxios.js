@@ -17,8 +17,27 @@ export default function (url,data={},method="GET") {
             url: 'http://localhost:3000' + url,
             data,
             method:method,
+            header:{
+                cookie:wx.getStorageSync("token")||""
+            },
             success: (res) => {
                 // console.log('success',res)
+
+                // 如何判断当前本次成功是不是登录接口的?
+                // 1.使用url进行判断
+                // 2.传一个特殊标识过来
+                if(data._isLogin){
+                    const cookies = res.cookies;
+                    const cookie = cookies.find((item)=>{
+                        return item.startsWith("MUSIC_U");
+                    })
+                    // console.log('cookie',cookie)
+                    wx.setStorage({
+                        key:"token",
+                        data:cookie
+                    })
+                }
+
                 // result = res;
 
                 // return response.data;

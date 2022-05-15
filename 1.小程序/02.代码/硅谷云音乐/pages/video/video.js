@@ -10,7 +10,19 @@ Page({
         navList:[],
 
         // 用于存储当前用户观看的分组下标
-        currentIndex:0
+        // currentIndex:0
+        currentId:null,
+
+        // 用于存储当前视频列表数据
+        videoList:[]
+    },
+
+    // 用于监视用户切换视频分组的操作
+    changeCurrentId(event){
+        const currentId = event.currentTarget.dataset.id;
+        this.setData({
+            currentId
+        })
     },
 
     // 用于监视用户切换视频分组的操作
@@ -47,7 +59,16 @@ Page({
 
         const result = await myAxios('/video/group/list');
         this.setData({
-            navList:result.data.slice(0,13)
+            navList:result.data.slice(0,13),
+            currentId:result.data[0].id
+        })
+
+        const result2 = await myAxios('/video/group',{id:this.data.currentId});
+        // console.log('result2',result2)
+        this.setData({
+            videoList:result2.datas.map((item)=>{
+                return item.data;
+            })  
         })
     },
 
