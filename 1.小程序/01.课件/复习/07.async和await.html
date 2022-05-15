@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        async function a(){
+            console.log(1)
+
+            new Promise((resolve)=>{
+                console.log(2)
+                resolve()
+            })
+
+            await new Promise((resolve)=>{
+                console.log(8)
+                resolve()
+            })
+
+            setTimeout(()=>{
+                console.log(3)
+            },0)
+
+            setTimeout(()=>{
+                console.log(4)
+            },1000)
+
+            console.log(5)
+
+            return 123;
+        }
+
+
+        function a(){
+            
+            console.log(1)
+
+            new Promise((resolve)=>{
+                console.log(2)
+                resolve()
+            })
+
+            return new Promise((resolve)=>{
+                console.log(8)
+                resolve()
+            })
+            .then(()=>{
+                setTimeout(()=>{
+                    console.log(3)
+                },0)
+
+                setTimeout(()=>{
+                    console.log(4)
+                },1000)
+
+                console.log(5)
+                return 123;
+            })
+
+        }
+        console.log(6)
+        const b = a();
+        console.log(7,b)
+
+        /*
+            async和await其实是Promise+.then的语法糖
+            await之后的代码,相当于放在promise的.then回调函数中了
+
+            async函数的返回值,一定是一个promise对象
+            如果给async函数书写了return代码,返回的数据就会成为promise对象的result值
+
+            返回的promise对象的状态控制
+                async函数中所有代码成功执行结束,promise的状态就会变为成功
+                async函数中的代码没有成功执行结束,promise的状态就会变为失败
+        */
+    </script>
+</body>
+</html>

@@ -7,26 +7,86 @@ Page({
      */
     data: {
         // 用于存储导航列表数据
-        navList:[],
+        navList: [],
 
         // 用于存储当前用户观看的分组下标
         // currentIndex:0
-        currentId:null,
+        currentId: null,
 
         // 用于存储当前视频列表数据
-        videoList:[]
+        videoList: []
+    },
+
+    // 用于请求对应分组的视频列表数据
+    async getVideoList() {
+        this.setData({
+            videoList: []
+        })
+        const result2 = await myAxios('/video/group', {
+            id: this.data.currentId
+        });
+        // console.log('result2',result2)
+        this.setData({
+            videoList: result2.datas.map((item) => {
+                return item.data;
+            })
+        })
+
+        // console.log(2)
     },
 
     // 用于监视用户切换视频分组的操作
-    changeCurrentId(event){
+    async changeCurrentId(event) {
         const currentId = event.currentTarget.dataset.id;
         this.setData({
             currentId
         })
+
+        wx.showLoading({
+            title:"加载中,请稍等"
+        })
+        // console.log(1)
+
+        await this.getVideoList();
+
+        // console.log(3)
+        wx.hideLoading()
+    },
+
+    // 用于监听视频的播放操作,自动停止上一个视频的播放
+    handlePlay(event) {
+        // console.log('handlePlay',event.currentTarget.id)
+        // console.log(this.oldVid)
+
+        const id = event.currentTarget.id;
+
+        // 如果具有上一个视频正在播放,就停止该视频
+        // 如果上一个视频和当前本次视频是同一个,就不暂停视频播放
+        if (this.oldVid && this.oldVid !== id) {
+            // 1.获取video上下文对象
+            const videoContext = wx.createVideoContext(this.oldVid);
+
+            // 2.使用API->pause方法,暂停视频的播放
+            videoContext.pause();
+        }
+
+        //将本次正在播放的视频的id记录下来,留给下次使用
+        this.oldVid = id;
+    },
+
+    // 仅用于测试视频相关API
+    testAPI() {
+        // console.log('testAPI')
+
+        // 1.获取video上下文对象
+        const videoContext = wx.createVideoContext('5854982FB330581B83112F4DFCD4EB49');
+
+        // 2.使用API->pause方法,暂停视频的播放
+        videoContext.pause();
     },
 
     // 用于监视用户切换视频分组的操作
-    changeCurrentIndex(event){
+    changeCurrentIndex(event) {
         // console.log('changeCurrentIndex',event)
 
         // 目前index数据存储于事件源身上,所以使用event.currentTarget百分百能找到
@@ -54,22 +114,16 @@ Page({
     /**
      * 生命周期函数--监听页面显示
      */
-    onShow:async function () {
+    onShow: async function () {
         // 注意:video页面是tabBar页面,一般加载之后就不会卸载,所以尽可能使用onShow
 
         const result = await myAxios('/video/group/list');
         this.setData({
-            navList:result.data.slice(0,13),
-            currentId:result.data[0].id
+            navList: result.data.slice(0, 13),
+            currentId: result.data[0].id
         })
 
-        const result2 = await myAxios('/video/group',{id:this.data.currentId});
-        // console.log('result2',result2)
-        this.setData({
-            videoList:result2.datas.map((item)=>{
-                return item.data;
-            })  
-        })
+        this.getVideoList();
     },
 
     /**

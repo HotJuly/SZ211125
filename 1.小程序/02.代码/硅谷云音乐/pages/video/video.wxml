@@ -3,7 +3,7 @@
   <view class="header">
     <image src="/static/images/video/video.jpg"></image>
     <input type="text" placeholder="光辉岁月" placeholder-class="placeholder"></input>
-    <image src="/static/images/logo.png"></image>
+    <image src="/static/images/logo.png" bindtap="testAPI"></image>
   </view>
 
   <!-- 导航栏区域 -->
@@ -35,7 +35,12 @@
     wx:for="{{videoList}}"
     wx:key="vid"
     >
-      <video class="common" src="{{item.urlInfo.url}}"></video>
+      <video 
+      class="common" 
+      id="{{item.vid}}"
+      bindplay="handlePlay"
+      src="{{item.urlInfo.url}}"
+      ></video>
       <view class="content">{{item.title}}</view>
       <view class="footer">
         <image class="avatar" src="{{item.creator.avatarUrl}}"></image>
