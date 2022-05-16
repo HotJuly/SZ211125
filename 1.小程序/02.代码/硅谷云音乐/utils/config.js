@@ -3,6 +3,7 @@ export default{
     // checkPermission:["pages/video/video","pages/index/index"],
     checkPermission:{
         "pages/video/video":true,
-        "pages/index/index":false
+        "pages/index/index":false,
+        "pages/recommendSong/recommendSong":true
     }
 }

@@ -10,6 +10,7 @@
     <script>
         // js中6个false值是哪些
         // undefined,0,NaN,"",false,null
+        // undefined和null除了与自己或者对方比较为true,其他都是false
 
 
         // 基础数据类型VS基础数据类型
@@ -39,6 +40,8 @@
         // valueOf对于object和array来说没有用,会得到原值
         // console.log("12",[]==![]);//true    [] == false =>  "" ==false => 0===0
         // console.log("14",{}==!{});//false   {} == false =>  "[object Object]" == false => NaN === 0
+
+        // new Number(1) == 1;
 
         // console.log("15",0=="0")    // true 0 ==0
         // console.log("16",0==[])     // true 0 == "" => 0===0

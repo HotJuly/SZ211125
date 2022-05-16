@@ -161,6 +161,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: async function () {
+        // 页面生命周期函数中的this一定是当前页面的实例对象
         // 注意:video页面是tabBar页面,一般加载之后就不会卸载,所以尽可能使用onShow
 
         // if(!hasPermission())return;
@@ -210,6 +211,7 @@ Page({
         // from代表当前触发转发的渠道
         // target代表当前触发转发的button组件信息
         // console.log('onShareAppMessage',from,target)
+
         if(from==="menu"){
             // 能进入这里就说明当前是通过右上角转发进入的
             return{
@@ -222,7 +224,7 @@ Page({
             // 注意点:自定义属性不支持大写英文
             // console.log(target)
             const {title,imageurl:imageUrl} = target.dataset;
-            console.log('imageUrl',target)
+            // console.log('imageUrl',target)
             return{
                 title,
                 imageUrl,
