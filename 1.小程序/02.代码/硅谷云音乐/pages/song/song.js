@@ -1,4 +1,5 @@
 // pages/song/song.js
+const appInstance = getApp();
 Page({
 
     /**
@@ -27,6 +28,9 @@ Page({
             // 也就是说需要暂停歌曲
 
             backgroundAudioManager.pause();
+
+            // 将当前歌曲的播放状态存入到app实例对象身上,方便后续逻辑判断使用
+            appInstance.globalData.playState = false;
         } else {
             // 能进入到这里,说明歌曲处于暂停状态
             // 也就是说需要播放歌曲
@@ -35,6 +39,12 @@ Page({
             // 注意:小程序文档此处有坑,除了添加src,还必须添加title属性,否则无法自动播放
             backgroundAudioManager.src = this.data.musicUrl;
             backgroundAudioManager.title = this.data.songObj.name;
+
+            // 将当前歌曲的id存入到app实例对象身上,方便后续逻辑判断使用
+            appInstance.globalData.audioId = this.data.songObj.id;
+
+            // 将当前歌曲的播放状态存入到app实例对象身上,方便后续逻辑判断使用
+            appInstance.globalData.playState = true;
         }
 
         this.setData({
@@ -53,7 +63,7 @@ Page({
         // console.log(options.songId)
 
         // 获取到当前歌曲id
-        const songId = options.songId;
+        const songId = options.songId*1;
 
         const result = await this.$myAxios('/song/detail', {
             ids: songId
@@ -76,6 +86,22 @@ Page({
         this.setData({
             musicUrl: result2.data[0].url
         })
+
+        const {audioId,playState} = appInstance.globalData;
+
+        // console.log(audioId,songId,playState)
+        if(playState && audioId === songId ){
+            this.setData({
+                isPlay:true
+            })
+        }
+
+
+
+        // 用于测试app实例对象存取数据操作
+        // console.log(1,appInstance.a.msg)
+        // appInstance.a.msg="我是修改之后的数据"
+        // console.log(2,appInstance.a.msg)
     },
 
     /**
