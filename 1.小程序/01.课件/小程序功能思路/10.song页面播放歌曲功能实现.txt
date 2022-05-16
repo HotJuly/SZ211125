@@ -17,6 +17,7 @@
 						wx.getBackgroundAudioManager()
 					2.给背景音频管理器对象添加src属性就可以自动播放歌曲
 						BackgroundAudioManager.src="链接"
+						BackgroundAudioManager.title="链接"
 
 
 	3.页面C3效果进入播放状态
