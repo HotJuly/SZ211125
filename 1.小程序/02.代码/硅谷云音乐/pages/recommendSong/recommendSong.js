@@ -11,6 +11,19 @@ Page({
 
         // 用于存储当前日期
         day:"--",
+
+        // 用于存储当前页面推荐列表数据
+        recommend:[]
+    },
+
+    // 用于监视用户点击推荐歌曲列表选项,自动跳转到song页面
+    toSong(event){
+        const song = event.currentTarget.dataset.song;
+        // console.log(song)
+        wx.navigateTo({
+        //   url: '/pages/song/song?song=' + JSON.stringify(song),
+          url: '/pages/song/song?songId=' + song.id
+        })
     },
 
     /**

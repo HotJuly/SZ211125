@@ -20,6 +20,8 @@
       class="recommendItem"
       wx:for="{{recommend}}"
       wx:key="id"
+      data-song="{{item}}"
+      bindtap="toSong"
       >
         <image src="{{item.album.picUrl}}" lazy-load></image>
         <view class="musicContent">
