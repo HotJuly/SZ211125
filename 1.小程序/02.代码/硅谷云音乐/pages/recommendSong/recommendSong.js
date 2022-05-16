@@ -13,13 +13,21 @@ Page({
         day:"--",
 
         // 用于存储当前页面推荐列表数据
-        recommend:[]
+        recommend:[],
+
+        // 用于记录当前song页面展示的歌曲下标
+        currentIndex:null
     },
 
     // 用于监视用户点击推荐歌曲列表选项,自动跳转到song页面
     toSong(event){
-        const song = event.currentTarget.dataset.song;
+        const {song,index} = event.currentTarget.dataset;
         // console.log(song)
+
+        this.setData({
+            currentIndex:index
+        })
+        
         wx.navigateTo({
         //   url: '/pages/song/song?song=' + JSON.stringify(song),
           url: '/pages/song/song?songId=' + song.id
@@ -30,7 +38,37 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        this.$PubSub.subscribe('switchType',(msg,type)=>{
+            // console.log('switchType',msg,type)
 
+            // 根据发送过来的标识,找到对应的歌曲id
+            let {currentIndex , recommend} = this.data;
+
+            if(type==="pre"){
+                // 能进入这里,说明用户需要的是上一首歌曲的信息
+                if(currentIndex===0){
+                    currentIndex = recommend.length-1;
+                }else{
+                    currentIndex--;
+                }
+            }else{
+                // 能进入这里,说明用户需要的是下一首歌曲的信息
+                if(currentIndex===recommend.length-1){
+                    currentIndex = 0;
+                }else{
+                    currentIndex++;
+                }
+            }
+
+            const id = recommend[currentIndex].id;
+
+            this.setData({
+                currentIndex
+            })
+
+            // console.log('id',id)
+            this.$PubSub.publish('sendId',id);
+        })  
     },
 
     /**
@@ -49,17 +87,20 @@ Page({
         const month = date.getMonth() + 1;
         const day = date.getDate();
 
-        this.setData({
-            month,
-            day
-        })
+        if(month!==this.data.month||day!==this.data.day){
 
-        const {recommend} = await this.$myAxios('/recommend/songs');
-
-        this.setData({
-            recommend
-        })
-        // console.log(recommend)
+            this.setData({
+                month,
+                day
+            })
+    
+            const {recommend} = await this.$myAxios('/recommend/songs');
+    
+            this.setData({
+                recommend
+            })
+            // console.log(recommend)
+        }
     },
 
     /**

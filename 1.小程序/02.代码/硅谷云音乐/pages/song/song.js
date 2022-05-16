@@ -15,20 +15,80 @@ Page({
         isPlay: false,
 
         // 用于存储当前页面歌曲的播放链接
-        musicUrl: null
+        musicUrl: null,
+
+        // 用于存储当前页面歌曲id
+        songId:null
+    },
+
+    // 专门用于请求歌曲的详细信息
+    async getMusicDetail() {
+        const result = await this.$myAxios('/song/detail', {
+            ids: this.data.songId
+        });
+        // console.log(result.songs[0])
+
+        this.setData({
+            songObj: result.songs[0]
+        })
+
+        wx.setNavigationBarTitle({
+            title: this.data.songObj.name
+        })
+    },
+
+    // 专门用于请求当前歌曲的音频链接
+    async getMusicUrl(){
+        const result2 = await this.$myAxios('/song/url', {
+            id: this.data.songId
+        });
+        // console.log(result.songs[0])
+
+        this.setData({
+            musicUrl: result2.data[0].url
+        })
+    },
+
+    // 用于监视用户点击上一首/下一首按钮,实现切换歌曲功能
+    switchType(event) {
+        const type = event.currentTarget.id;
+        this.$PubSub.subscribe('sendId', (msg, songId) => {
+            // console.log('sendId', msg, songId)
+
+            this.setData({
+                songId
+            });
+
+            const promise1 = this.getMusicDetail();
+    
+            const promise2 = this.getMusicUrl();
+
+            Promise.all([promise1,promise2])
+            .then(()=>{
+                this.backgroundAudioManager.src = this.data.musicUrl;
+                this.backgroundAudioManager.title = this.data.songObj.name;
+
+                this.setData({
+                    isPlay:true
+                })
+            })
+
+            
+        })
+        this.$PubSub.publish('switchType', type);
     },
 
     // 用于监视用户点击播放按钮,实现播放/暂停歌曲功能
     handlePlay() {
         // 1.获取到背景音频管理器实例对象
-        const backgroundAudioManager = wx.getBackgroundAudioManager();
+        // const this.backgroundAudioManager = wx.getthis.backgroundAudioManager();
 
 
         if (this.data.isPlay) {
             // 能进入到这里,说明歌曲正在播放
             // 也就是说需要暂停歌曲
 
-            backgroundAudioManager.pause();
+            this.backgroundAudioManager.pause();
 
             // 将当前歌曲的播放状态存入到app实例对象身上,方便后续逻辑判断使用
             appInstance.globalData.playState = false;
@@ -38,8 +98,8 @@ Page({
 
             // 2.给背景音频管理器实例对象添加src属性,实现播放歌曲功能
             // 注意:小程序文档此处有坑,除了添加src,还必须添加title属性,否则无法自动播放
-            backgroundAudioManager.src = this.data.musicUrl;
-            backgroundAudioManager.title = this.data.songObj.name;
+            this.backgroundAudioManager.src = this.data.musicUrl;
+            this.backgroundAudioManager.title = this.data.songObj.name;
 
             // 将当前歌曲的id存入到app实例对象身上,方便后续逻辑判断使用
             appInstance.globalData.audioId = this.data.songObj.id;
@@ -64,40 +124,30 @@ Page({
         // console.log(options.songId)
 
         // 获取到当前歌曲id
-        const songId = options.songId*1;
-
-        const result = await this.$myAxios('/song/detail', {
-            ids: songId
-        });
-        // console.log(result.songs[0])
+        const songId = options.songId * 1;
 
         this.setData({
-            songObj: result.songs[0]
+            songId
         })
 
-        wx.setNavigationBarTitle({
-            title: this.data.songObj.name
-        })
+        this.getMusicDetail();
 
-        const result2 = await this.$myAxios('/song/url', {
-            id: songId
-        });
-        // console.log(result.songs[0])
+        this.getMusicUrl();
 
-        this.setData({
-            musicUrl: result2.data[0].url
-        })
-
-        const {audioId,playState} = appInstance.globalData;
+        const {
+            audioId,
+            playState
+        } = appInstance.globalData;
 
         // console.log(audioId,songId,playState)
-        if(playState && audioId === songId ){
+        if (playState && audioId === songId) {
             this.setData({
-                isPlay:true
+                isPlay: true
             })
         }
 
-        console.log('PubSub',PubSub)
+        // console.log('PubSub', PubSub)
+        this.backgroundAudioManager = wx.getBackgroundAudioManager();
 
 
 

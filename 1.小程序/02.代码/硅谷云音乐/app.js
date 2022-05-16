@@ -1,5 +1,6 @@
 // app.js
 import myAxios from './utils/myAxios';
+import PubSub from 'pubsub-js';
 import hasPermission from './utils/hasPermission';
 import utilConfig from './utils/config';
 App({
@@ -8,6 +9,8 @@ App({
     Page = function(config){
 
       config.$myAxios = myAxios;
+
+      config.$PubSub = PubSub;
 
       const showFn = config.onShow;
 
