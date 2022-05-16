@@ -19,6 +19,28 @@
         // console.log(getAttribute(obj, 'a.b.e', 'default') === 'default' )
         // console.log(getAttribute(obj, 'd.0.f') === 'abc' )
 
+        function getAttribute(object,attribute,defaultValue){
+            // 'a.b.c'=>['a','b','c']
+            const keys = attribute.split('.');
+            let val = object;
+            for (let index = 0; index < keys.length; index++) {
+                const key = keys[index];
+                val = val[key]
+
+                if(!val){
+                    return defaultValue
+                }
+            }
+            return val;
+        }
+
+        
+        const obj = {a: {b: {c: 100}}, d: [{f: 'abc'}]}; 
+
+        console.log(getAttribute(obj, 'a.b.c', 0) === 100 )
+        console.log(getAttribute(obj, 'a.b.e', 'default') === 'default' )
+        console.log(getAttribute(obj, 'd.0.f') === 'abc' )
+
     </script>
 </body>
 

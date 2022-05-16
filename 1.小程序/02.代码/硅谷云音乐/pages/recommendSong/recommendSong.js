@@ -38,7 +38,7 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-        this.$PubSub.subscribe('switchType',(msg,type)=>{
+        this.token = this.$PubSub.subscribe('switchType',(msg,type)=>{
             // console.log('switchType',msg,type)
 
             // 根据发送过来的标识,找到对应的歌曲id
@@ -114,7 +114,7 @@ Page({
      * 生命周期函数--监听页面卸载
      */
     onUnload: function () {
-
+        this.$PubSub.unsubscribe(this.token);
     },
 
     /**

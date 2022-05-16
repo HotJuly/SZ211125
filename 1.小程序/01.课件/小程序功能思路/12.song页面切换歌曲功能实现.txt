@@ -59,11 +59,14 @@
 					动作:
 						1.订阅(绑定一个消息,提供一个函数,用于接收数据)
 
-							PubSub.subscribe(消息名称,接收数据的回调函数)
+							token = PubSub.subscribe(消息名称,接收数据的回调函数)
 
 						2.发布(触发一个消息,提供数据,用于发送数据)
 
 							PubSub.publish(消息名称,发送的数据)
+
+						3.解绑
+							PubSub.unsubscribe(token)
 
 					约束:
 						1.订阅操作必须在发布之前
