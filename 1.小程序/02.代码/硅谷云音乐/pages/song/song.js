@@ -18,7 +18,88 @@ Page({
         musicUrl: null,
 
         // 用于存储当前页面歌曲id
-        songId:null
+        songId:null,
+
+        // 用于存储当前歌曲的总时长信息
+        durationTime:"--:--",
+
+        // 用于存储当前歌曲的当前时间信息
+        currentTime:"00:00",
+
+        // 用于控制当前红色进度条的宽度
+        currentWidth:0
+    },
+
+    // 用于监视用户拖拽进度条操作
+    handleTouchMove(event){
+        // console.log('handleTouchMove',event)
+        const clientX = event.touches[0].clientX;
+        const left = clientX - this.offsetLeft;
+        // console.log('left',left)
+
+        this.scale = left/this.width;
+        this.setData({
+            currentWidth:this.scale *100,
+            currentTime:this.$moment(this.data.songObj.dt*this.scale).format("mm:ss")
+        })
+
+    },
+
+    handleTouchEnd(){
+        this.flag=false;
+        
+        this.backgroundAudioManager.seek(
+            this.backgroundAudioManager.duration * this.scale
+        )
+    },
+
+    handleTouchStart(){
+        this.flag=true;
+    },
+
+
+    // 用于绑定背景音频管理器对象相关的事件
+    addEvent(){
+
+        this.backgroundAudioManager.onPlay(()=>{
+            // console.log('onPlay')
+
+            appInstance.globalData.playState = true;
+
+            if(appInstance.globalData.audioId === this.data.songId){
+                this.setData({
+                    isPlay:true
+                })
+            }
+        })
+
+        this.backgroundAudioManager.onPause(()=>{
+            // console.log('onPause')
+            appInstance.globalData.playState = false;
+
+            
+            if(appInstance.globalData.audioId === this.data.songId){
+                this.setData({
+                    isPlay:false
+                })
+            }
+        })
+
+        this.backgroundAudioManager.onTimeUpdate(()=>{
+            // console.log('onTimeUpdate',this.backgroundAudioManager.currentTime)
+
+            const {currentTime,duration} = this.backgroundAudioManager;
+
+            const currentWidth = currentTime / duration * 100;
+
+            if(!this.flag){
+                this.setData({
+                    currentWidth,
+                    currentTime:this.$moment(currentTime*1000).format("mm:ss")
+                })
+            }
+        })
+
     },
 
     // 专门用于请求歌曲的详细信息
@@ -29,7 +110,8 @@ Page({
         // console.log(result.songs[0])
 
         this.setData({
-            songObj: result.songs[0]
+            songObj: result.songs[0],
+            durationTime:this.$moment(result.songs[0].dt).format("mm:ss")
         })
 
         wx.setNavigationBarTitle({
@@ -70,7 +152,7 @@ Page({
             this.backgroundAudioManager.pause();
 
             // 将当前歌曲的播放状态存入到app实例对象身上,方便后续逻辑判断使用
-            appInstance.globalData.playState = false;
+            // appInstance.globalData.playState = false;
         } else {
             if(!this.data.musicUrl){
                 await this.getMusicUrl();
@@ -89,7 +171,7 @@ Page({
             appInstance.globalData.audioId = this.data.songObj.id;
 
             // 将当前歌曲的播放状态存入到app实例对象身上,方便后续逻辑判断使用
-            appInstance.globalData.playState = true;
+            // appInstance.globalData.playState = true;
         }
 
         this.setData({
@@ -162,6 +244,16 @@ Page({
 
             
         })
+
+        this.addEvent();
+
+        const query = wx.createSelectorQuery();
+
+        query.select(".wrap").boundingClientRect((data)=>{
+            // console.log('data',data);
+            this.offsetLeft = data.left;
+            this.width = data.width;
+        }).exec();
 
 
 
