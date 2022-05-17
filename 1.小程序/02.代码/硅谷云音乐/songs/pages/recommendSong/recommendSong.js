@@ -30,7 +30,7 @@ Page({
         
         wx.navigateTo({
         //   url: '/pages/song/song?song=' + JSON.stringify(song),
-          url: '/pages/song/song?songId=' + song.id
+          url: '/songs/pages/song/song?songId=' + song.id
         })
     },
 

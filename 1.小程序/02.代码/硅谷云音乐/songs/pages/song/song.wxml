@@ -11,7 +11,10 @@
   <view class="barContainer">
     <text class="currentTime">{{currentTime}}</text>
     <view class="wrap">
-      <view class="mask" bindtouchstart="handleTouchStart" bindtouchend="handleTouchEnd" bindtouchmove="handleTouchMove"></view>
+      <view class="mask" 
+      bindtouchstart="handleTouchStart" 
+      bindtouchend="handleTouchEnd" 
+      bindtouchmove="handleTouchMove"></view>
       <view class="inner" style="width:{{currentWidth}}%">
         <view class="point"></view>
       </view>

@@ -33,10 +33,16 @@ Page({
     // 用于监视用户拖拽进度条操作
     handleTouchMove(event){
         // console.log('handleTouchMove',event)
+
+        // 用户当前手指距离屏幕最左侧的位置
         const clientX = event.touches[0].clientX;
+
+        // 用户手指距离进度条左侧的位置
         const left = clientX - this.offsetLeft;
         // console.log('left',left)
 
+
+        // 比例 = 当前手指滑动位置长度 / 进度条的总长度,可以获取一个百分比数据
         this.scale = left/this.width;
         this.setData({
             currentWidth:this.scale *100,
