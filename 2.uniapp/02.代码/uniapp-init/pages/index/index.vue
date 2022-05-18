@@ -13,6 +13,29 @@
 			</view>
 			<button class="username">七月</button>
 		</view>
+		
+		<scroll-view 
+		v-if="indexData.kingKongModule"
+		scroll-x="true" 
+		class="navScroll" 
+		enable-flex>
+			<view 
+			class="navItem" 
+			:class="navIndex===-1?'active':''"
+			@tap="changeNavIndex(-1)"
+			>推荐</view>
+			<view 
+			class="navItem" 
+			
+			v-for="(item,index) in indexData.kingKongModule.kingKongList"
+			
+			:class="{
+				active:navIndex===index
+			}"
+			:key="item.L1Id"
+			@tap="changeNavIndex(index)">{{item.text}}</view>
+		</scroll-view>
+		
 	</view>
 	<!-- <div>
 		<div>123</div>
@@ -25,11 +48,34 @@
 	export default {
 		data() {
 			return {
-				title:'Hello43'
+				title:'Hello43',
+				navIndex:-1,
+				indexData:{}
 			}
 		},
-		onLoad() {},
-		methods:{}
+		// onLoad() {
+		// 	console.log('onLoad')
+		// },
+		// created() {
+		// 	console.log('created')
+		// },
+		mounted() {
+			// uniapp同时兼容小程序和Vue的生命周期,习惯哪个用哪个
+			// uniapp同时兼容小程序的绝大多数API
+			// console.log('mounted')
+			uni.request({
+				url:"/api/getIndexData",
+				success:(res)=>{
+					// console.log('res',res)
+					this.indexData = res.data;
+				}
+			})
+		},
+		methods:{
+			changeNavIndex(index){
+				this.navIndex = index;
+			}
+		}
 	}
 </script>
 
@@ -72,4 +118,17 @@
 				font-size 24upx
 				flex-shrink  0
 				color red
+		.navScroll
+			// display flex
+			white-space nowrap
+			.navItem
+				display inline-block
+				width 140upx
+				height 80upx
+				text-align center
+				line-height 80upx
+				flex-shrink 0
+				font-size 28upx
+				&.active
+					border-bottom 4upx solid red
 </style>

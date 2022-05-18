@@ -1,0 +1,10 @@
+1.使用内置浏览器
+	最不推荐
+	因为该浏览器不是主流浏览器
+
+2.在项目中添加vue.config.js文件
+	在内部添加proxy规则的配置
+	参考文档:参考Vue-CLI官网配置
+
+3.在manifest.json文件中添加h5选项,并配置devServer
+	参考文档:参考webpack官网
