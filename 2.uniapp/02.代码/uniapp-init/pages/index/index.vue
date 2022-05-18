@@ -45,12 +45,13 @@
 </template>
 
 <script>
+	import {mapState,mapActions} from 'vuex';
 	export default {
 		data() {
 			return {
-				title:'Hello43',
+				// title:'Hello43',
 				navIndex:-1,
-				indexData:{}
+				// indexData:{}
 			}
 		},
 		// onLoad() {
@@ -70,14 +71,47 @@
 			// 		this.indexData = res.data;
 			// 	}
 			// })
-			const result = await this.$myAxios('/getIndexData');
-			// console.log('result',result)
-			this.indexData = result;
+			// const result = await this.$myAxios('/getIndexData');
+			// // console.log('result',result)
+			// this.indexData = result;
+			// this.$store.dispatch('home/getIndexData')
+			
+			// this["home/getIndexData"]();
+			
+			// this.getIndexData();
+			this.getIndexData123();
+			
+			// console.log('1',this.$store.state.home.initData)
+			// console.log('2',this.initData)
+			// console.log('3',this.initData)
 		},
 		methods:{
 			changeNavIndex(index){
 				this.navIndex = index;
 			}
+		},
+		computed:{
+			// computed,可以根据一个已有的响应式属性,计算出一个新的数值
+			// 如果被监视的属性发生变化,就会重新计算出最新的值
+			// 如果被监视的属性是一个非响应式属性,那么computed将会失去响应式的效果
+			// initData(){
+			// 	return this.$store.state.home.initData
+			// }
+			
+			// ...mapState({
+			// 	initData:state=>{
+			// 		return state.home.initData
+			// 	}
+			// })
+			// ...mapState("home",["initData"])
+			...mapState("home",["indexData"])
+		},
+		methods:{
+			// ...mapActions(["home/getIndexData"])
+			// ...mapActions("home",["getIndexData"]),
+			...mapActions("home",{
+				getIndexData123:"getIndexData"
+			}),
 		}
 	}
 </script>
