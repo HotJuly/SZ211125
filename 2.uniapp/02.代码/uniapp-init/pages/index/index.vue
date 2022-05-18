@@ -59,17 +59,20 @@
 		// created() {
 		// 	console.log('created')
 		// },
-		mounted() {
+		async mounted() {
 			// uniapp同时兼容小程序和Vue的生命周期,习惯哪个用哪个
 			// uniapp同时兼容小程序的绝大多数API
 			// console.log('mounted')
-			uni.request({
-				url:"/api/getIndexData",
-				success:(res)=>{
-					// console.log('res',res)
-					this.indexData = res.data;
-				}
-			})
+			// uni.request({
+			// 	url:"/api/getIndexData",
+			// 	success:(res)=>{
+			// 		// console.log('res',res)
+			// 		this.indexData = res.data;
+			// 	}
+			// })
+			const result = await this.$myAxios('/getIndexData');
+			// console.log('result',result)
+			this.indexData = result;
 		},
 		methods:{
 			changeNavIndex(index){
