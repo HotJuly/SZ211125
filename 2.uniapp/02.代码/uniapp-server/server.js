@@ -47,6 +47,13 @@ router.get('/getIndexData',(ctx,next)=>{
 	ctx.body=indexData
 })
 
+// 用于返回首页相关数据
+const categoryDatas = require('./datas/categoryDatas.json');
+router.get('/getCategoryDatas',(ctx,next)=>{
+	// console.log('test success!!')
+	ctx.body=categoryDatas
+})
+
 // 2.将服务器应用实例运行到某个端口上,并监听该端口
 app.listen(3001,(error)=>{
 	if(error){
