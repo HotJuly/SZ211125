@@ -2279,7 +2279,7 @@ var mutations = {
       /*
             响应式:当某个属性值发生变化的时候,页面会展示出最新的数据
             问题1:如何添加响应式属性?
-            	1.this.$set
+            	1.vm.$set
             	2.Vue.set
             	3.Vue.observable
             	
@@ -2295,7 +2295,6 @@ var mutations = {
               
               */
       // good.count=1;
-      // this._vm.$set()
       _vue.default.set(good, 'count', 1);
       _vue.default.set(good, 'selected', true);
       state.cartList.push(good);

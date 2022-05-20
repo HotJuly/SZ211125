@@ -76,7 +76,11 @@
 					"pathRewrite": { "^/api": "" }
 				}
 			}
+		},
+		"publicPath":{
+			"@":"./"
 		}
+		
 	},
     "uniStatistics" : {
         "enable" : false
