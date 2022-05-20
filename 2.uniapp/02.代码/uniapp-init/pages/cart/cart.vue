@@ -21,10 +21,16 @@
 			<view class="cartList">
 				<view 
 				class="cartItem"
-				v-for="shopItem in cartList"
+				v-for="(shopItem,index) in cartList"
 				:key="shopItem.id"
 				>
-					<text class='iconfont icon-xuanzhong selected'></text>
+					<text 
+					class='iconfont icon-xuanzhong'
+					:class="{
+						selected:shopItem.selected
+					}"
+					@click="changeSelected(index)"
+					></text>
 					<view class="shopItem">
 						<image class="shopImg" :src="shopItem.listPicUrl" mode=""></image>
 						<view class="shopInfo">
@@ -34,16 +40,22 @@
 					</view>
 					
 					<view class="countCtrl">
-						<text class="add"> + </text>
+						<text class="add" @click="changeCount(true,index)"> + </text>
 						<text class="count"> {{shopItem.count}} </text>
-						<text class="del"> - </text>
+						<text class="del" @click="changeCount(false,index)"> - </text>
 					</view>
 				</view>
 				
 			</view>
 			
 			<view class="cartFooter">
-				<text class='iconfont icon-xuanzhong selected'></text>
+				<text 
+				class='iconfont icon-xuanzhong'
+				:class="{
+					selected:isSelectedAll
+				}"
+				@click="changeSelectedAll(!isSelectedAll)"
+				></text>
 				<text class="allSelected">已选 3</text>
 				<view class="right">
 					<text class="totalPrice">合计: ￥1000</text>
@@ -56,7 +68,7 @@
 </template>
 
 <script>
-	import {mapState} from 'vuex';
+	import {mapState,mapMutations,mapGetters} from 'vuex';
 	export default {
 		data() {
 			return {
@@ -66,9 +78,25 @@
 		onShow(){
 			const userInfo = uni.getStorageSync('userInfo');
 			this.isLogin = Boolean(userInfo);
+			console.log(userInfo)
 		},
 		computed:{
-			...mapState("cart",["cartList"])
+			...mapState("cart",["cartList"]),
+			...mapGetters("cart",["isSelectedAll"])
+		},
+		methods:{
+			changeCount(type,index){
+				// console.log('changeCount',type,index)
+				this.CHANGE_SHOPITEM_COUNT_MUTATION({type,index})
+			},
+			changeSelected(index){
+				// console.log('changeCount',type,index)
+				this.CHANGE_SHOPITEM_SELECTED_MUTATION(index)
+			},
+			changeSelectedAll(selected){
+				this.CHANGE_SELECTED_ALL_MUTATION(selected);
+			},
+			...mapMutations("cart",["CHANGE_SELECTED_ALL_MUTATION","CHANGE_SHOPITEM_COUNT_MUTATION","CHANGE_SHOPITEM_SELECTED_MUTATION"])
 		}
 	}
 </script>
