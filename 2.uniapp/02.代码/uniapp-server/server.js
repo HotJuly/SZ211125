@@ -54,6 +54,32 @@ router.get('/getCategoryDatas',(ctx,next)=>{
 	ctx.body=categoryDatas
 })
 
+// 用于返回首页分类相关数据
+const indexCateList = require('./datas/indexCateList.json');
+router.get('/getIndexCateList',async (ctx,next)=>{
+	// console.log('test success!!')
+	const promise = new Promise((resolve)=>{
+		setTimeout(resolve,3000);
+	})
+	await promise;
+	ctx.body=indexCateList
+})
+
+
+
+// 用于返回首页相关数据
+const goods = require('./datas/goods.json');
+router.get('/getGoodDetail',(ctx,next)=>{
+	// console.log('test success!!')
+	const {goodid} = ctx.query;
+	
+	const result = goods.find((good)=>{
+		return good.id === goodid>>>0
+	})
+	// console.log('goodid',goodid)
+	ctx.body=result
+})
+
 // 2.将服务器应用实例运行到某个端口上,并监听该端口
 app.listen(3001,(error)=>{
 	if(error){
