@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* 
+            使用class设计并测试以下需要
+            需求1: 
+                现在1个人, 有姓名与年龄(值自己指定), 都能自我介绍自己的姓名和年龄, 能得到当前的总人数
+            需求2: 
+                现在又有了一个学生, 它有身价的属性, 能介绍它的所有信息
+
+            class重点
+                1.class中必须具有constructor函数
+                2.在class中书写的属性,会保存在实例对象身上
+                3.在class中书写的方法,会保存在原型对象身上
+                    小总结:如果使用=号赋值,无论属性值是什么数据类型,最终都会存放在实例对象身上
+                        如果使用ES6方法的简写语法,那么该方法会存放在原型对象身上
+                4.super的使用方法
+                    super函数
+                        1.该函数必须在子类的constructor中进行调用,否则报错
+                    super对象
+                        1.在子类的constructor或者方法中,使用super对象,那么该对象都相当于是父类的原型对象
+                        2.在静态方法中,使用super对象,那么就相当于是父类的构造函数
+                5.static关键字
+                    加上static关键字的属性或者方法,都会变成构造函数自己的属性或者方法
+                        从原型链上找不到
+
+
+            问题:属性和方法的关系?
+                对象通过key和value形式存储数据,那么key和value这个键值对称之为属性
+                方法是特殊的属性,特殊在属性值的类型是函数
+
+
+            
+        */
+
+        class Person {
+            constructor(name, age) {
+                this.name = name;
+                this.age = age;
+            }
+
+            // sex = 1;
+
+            static say(){
+                console.log(`我是${this.name},我今年${this.age}`);
+            }
+
+            // say = ()=>{
+            //     console.log(`我是${this.name},我今年${this.age}`);
+            // }
+        }
+        var p1 = new Person("xiaoming", 23);
+        console.log(p1)
+
+        class Student extends Person{
+            constructor(name,age,price){
+                // 其实就相当于Person.call(this,name,age);
+                super(name,age)
+                // this.name = name;
+                // this.age = age;
+                this.price = price;
+                // super.say()
+            }
+
+            static say(){
+                console.log(`我是${this.name},我今年${this.age},我有${this.price}`);
+                super.say();
+            }
+        }
+
+        var s1 = new Student("xiaoming",23,1000000000);
+        console.log(s1);
+        // s1.say();
+        Student.say();
+    </script>
+</body>
+
+</html>

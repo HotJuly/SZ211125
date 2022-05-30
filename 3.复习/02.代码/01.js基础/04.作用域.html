@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            js中的作用域,只与函数的声明位置相关,与调用位置无关
+
+            在编程界中,作用域一共分为两大类:
+                1.词法作用域(又称为静态作用域)
+                    函数的作用域只与声明位置相关,与调用位置无关
+                        js只有词法作用域,没有动态作用域
+
+                2.动态作用域
+                    函数的作用域只与调用位置相关,与声明位置无关(Shell语言)
+        
+            
+            作用域相关
+                查找变量的规则
+                代表变量的使用范围
+
+                1.预解析(声明提升)
+                    函数提升
+                        将当前函数声明和函数赋值都提升至最顶端,之后在执行主线程代码
+
+                    变量提升
+                        将变量声明提升至最顶端,变量赋值留在原地,之后在执行主线程代码
+
+                    注意点:
+                        1.需要区分清楚标识赋值和标识声明两个操作
+                        2.变量名和函数名是一样的东西,统称为标识
+                        3.函数表达式的提升,其实就是变量提升,他只会将变量声明提升到最顶部
+
+                2.预解析的优先级
+                    函数提升优先于变量提升
+
+                3.预解析的范围
+                    预解析只会将声明提升至当前作用域的最顶端(不会穿透作用域)
+
+                4.作用域的分类
+                    1.块级作用域(ES6新增,必须使用let或者const才能得到)
+                        let需要使用在某个{}中才能生效,会导致声明的变量只能在该{}中使用,外界无法访问
+                    2.全局作用域
+                    3.函数作用域(又称为局部作用域)
+        
+        */
+        // var a = 1;
+
+        // function wrap(){
+        //     var a = 2;
+        //     function inner(){
+        //         console.log(a)
+        //     }
+        //     return inner;
+        // }
+
+        // var inner = wrap();
+        // inner();
+
+
+        // console.log(a);
+        // function a(){}
+
+        // function a(){}
+        // console.log(a);
+
+
+        // console.log(a);
+        // var a = 3;
+
+        // var a;
+        // console.log(a);
+        // a = 3;
+
+        // var a=3;
+        // function a(){}
+        // console.log(a);
+
+        
+        // function a(){}
+        // var a;
+        // a=3;
+        // console.log(a);
+
+        
+        // var a = 3;
+        // var a = function (){}
+        // console.log(a);
+
+        // var a;
+        // a = 3;
+        // a = function (){}
+        // console.log(a);
+
+
+        // var a = 3;
+        // function wrap(){
+        //     var a = 1;
+        //     var b = 2;
+        //     console.log(a,b);
+        // }
+
+        // wrap()
+        // console.log(a,b);
+
+        // var a = 1;
+        
+        // let obj = {
+        //     a:2,
+        //     fn2:function(){
+        //         console.log(a);
+        //     }
+        // }
+        // obj.fn2();
+
+        // if(){
+        //     let a=1;
+        // }
+
+        /*
+            js的漏洞
+                该题无法以正常的作用域来理解
+                具名函数表达式的情况下:
+                    1.该函数名称只能在函数内部使用,外部不可见
+                    2.该函数名称的值无法修改,修改无效
+        
+        */
+        // var a = 1;
+        
+        // var obj = {
+        //     a:2,
+        //     fn2:function a(){
+        //         a=3;
+        //         console.log(a);
+        //     }
+        // }
+        // obj.fn2();
+        // console.log(a);
+
+        (function a(){
+            a=5555;
+            console.log(a)
+        })();
+        console.log(a)
+    </script>
+</body>
+</html>
