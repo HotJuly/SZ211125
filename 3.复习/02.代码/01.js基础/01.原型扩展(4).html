@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            面试题:现在具有一个data变量,内部存放有数据,请问如何知道该数据的数据类型
+            方法:
+                1.instanceof
+                    A instanceof B
+                    B的类型需要自己填入,他只能判断当前数据是否是B数据类型
+                
+                2.typeof
+                    typeof data
+                    返回值:number,string,boolean,undefined,function,Symbol,object(null)
+                    缺点:
+                        1.null会被识别为对象
+                        2.无法具体分辨对象数据类型
+
+                3.toString
+        */
+
+        // var data = new Date();
+
+        // console.log(data instanceof Array)
+        // console.log(typeof data)
+        // var result = Object.prototype.toString.call(data).split(" ")[1].replace("]","");
+        // console.log(result)
+
+        // var arr = [0,1,2,[3,4,[5,[6,7],8]]];
+        // console.log(arr.toString().split(','))
+    </script>
+</body>
+</html>
