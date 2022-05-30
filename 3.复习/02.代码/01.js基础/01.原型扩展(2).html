@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            注意点:
+                读取属性会顺着隐式原型链向上查找
+                设置属性不会顺着原型链向上(!!!)
+        
+        
+        */
+        function Person(name){
+            this.name=name;
+        }
+        var p1 = new Person("xiaoming");
+
+        Person.prototype.c=1;
+
+        // p1.c+=1;
+        p1.c = p1.c + 1;
+
+        console.log(p1,p1.c,Person.prototype.c)
+    </script>
+</body>
+</html>

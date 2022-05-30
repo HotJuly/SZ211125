@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            构造函数
+                首字母大写只是约定俗成的规矩,可以不遵守
+                只有通过new关键字调用的函数,才能成为构造函数
+                    只通过函数声明,是没办法区分是否是一个构造函数的
+
+            内存:
+                1.栈内存
+                    只能存放标识,基础数据类型,地址值
+                2.堆内存
+                    可以存放对象数据类型,基础数据类型
+                
+                函数名和变量名/形参,其实都成为标识
+
+
+            原型和原型链
+                1.每个实例对象都具有隐式原型
+                2.每个构造函数都具有显式原型
+                3.实例对象的隐式原型指向构造函数的显式原型
+                4.原型对象身上的constructor指向对应的构造函数
+        
+        */
+        // function person(name){
+        //     this.name=name;
+        // }
+
+        function Person(name){
+            this.name=name;
+            // return {
+            //     name:"小王"
+            // };
+        }
+        
+        var p1 = new Person("xiaoming");
+        console.log(p1)
+
+        /*
+            new做的事情
+                1.自动声明形参,并将实参的数据传入形参中存储
+                2.创建一个对象,将该对象放入this中
+                3.将当前构造函数的显式原型属性赋值给实例对象作为他的隐式原型属性的值
+                4.会默认返回this(实例对象)
+                    如果return的是对象数据类型的数据,那么就会返回该对象,不会返回实例对象
+        
+        */
+
+        function Dog(name){
+            var that = new Object();
+            that.__proto__ = Dog.prototype;
+            that.name = name;
+            return that;
+        }
+
+        var d1 = Dog("pika");
+        console.log(d1)
+    </script>
+</body>
+</html>
