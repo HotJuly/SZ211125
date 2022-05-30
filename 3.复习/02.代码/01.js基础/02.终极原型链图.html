@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            原型链重点:
+                1.万物皆对象(除了基础数据以外)
+
+                2.Object函数是所有实例对象的直接/间接的构造函数
+                    所有的对象都是Object的实例对象
+
+                3.所有的函数都是Function的实例对象
+                    包括他自己(???)
+
+                4.函数是js中的一等公民,它既是函数,又是对象
+                    Fn.prototype
+
+            语法糖:
+                {} -> new Object
+                function -> new Function
+        
+        */
+        function Foo() {}
+        const f1 = new Foo()
+
+        const o1 = new Object()
+        // const o2 = {}
+
+        // Foo instanceof Object            true
+        // Foo instanceof Function          true
+        // Object instanceof Object         true
+        // Function instanceof Function     true
+        // Function instanceof Object       true
+
+        // Object instanceof Foo            false
+        // f1 instanceof Function           false
+        // f1 instanceof Object             true
+
+        /*
+            在js中,使用C语言创建的内容
+                1.Function
+                2.Object
+                3.Function.prototype
+
+            问题:什么是伪数组?
+                1.有length属性
+                2.使用索引形式存储数据
+                3.不能使用数组的方法
+
+                例如:arguments,nodeList,HTMLCOLLECTION等
+
+            在js原型图中,作者人为添加的关系线
+                1.Function.__proto__ === Function.prototype
+                    如果没有这条线,Function就无法使用所有函数共享的函数方法
+                    这条线可以证明Function自己是函数
+                        例如:Function.call将会无法使用
+
+                2.Object.__proto__ === Function.prototype
+                    如果没有这条线,Object就无法使用所有函数共享的函数方法
+                    这条线可以证明Object自己是函数
+
+                3.Function.prototype.__proto__ === Object.prototype
+                    如果没有这条线,函数就只是函数了,他就不是对象
+                        它将无法使用对象的所有方法,同时js将会出现两个原型链的顶点
+
+                4.Object.prototype.__proto__ === null
+                    如果不修改这条线,那么js对象在查找原型链的时候,将会进入死循环,代码无法运行
+        
+        */
+       console.log(Function);
+       console.log(Object);
+       console.log(Function.prototype);
+       console.log(Object.prototype);
+    </script>
+</body>
+
+</html>

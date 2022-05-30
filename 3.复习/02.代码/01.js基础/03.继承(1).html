@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /* 
+        使用构造函数设计并测试以下需要
+        需求1: 
+            现在1个人, 有姓名与年龄(值自己指定), 都能自我介绍自己的姓名和年龄, 能得到当前的总人数
+        需求2: 
+            现在又有了一个学生, 它有身价的属性, 能介绍它的所有信息
+        */
+
+        function Person(name,age){
+            this.name = name;
+            this.age = age;
+            // this.say=function(){
+            //     console.log(`我是${this.name},我今年${this.age}`);
+            // }
+            Person.count++;
+        }
+        Person.count=0;
+
+        Person.prototype.say=function(){
+            console.log(`我是${this.name},我今年${this.age},${Person.count}`);
+        }
+
+        var p1 = new Person("xiaoming",23);
+        // console.log(p1)
+        // p1.say();
+
+        /*
+            组合继承
+                1.证明Student是Person
+                    必须让Student的实例对象,具有Person的所有属性
+                    使用call方法借调父类的构造函数,让其帮忙加工自己的实例对象
+
+                2.获取到Person的所有方法
+                    修改原型链,让Student的原型链上出现Person
+                    Student.prototype = new Person();
+                    Student.prototype.constructor = Student;
+        
+
+            重写
+
+        */
+
+        function Student(name,age,price){
+            Person.call(this,name,age)
+            // this.name = name;
+            // this.age = age;
+            this.price = price;
+        }
+        // Student.prototype = Person.prototype;
+
+        Student.prototype = new Person();
+        Student.prototype.constructor = Student;
+
+        Student.prototype.say = function(){
+            console.log(`我是${this.name},我今年${this.age},我有${this.price},${Person.count}`);
+        }
+        var s1 = new Student("xiaoming",23,1000000000);
+        // console.log(s1,Person.count)
+        s1.say();
+
+    </script>
+</body>
+</html>
