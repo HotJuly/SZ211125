@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            1.闭包的产生条件
+                1.必须存在函数嵌套关系
+                2.内部函数必须使用到外部函数的变量
+
+                问题:外部函数如果不返回内部函数,会不会产生闭包?
+                答案:会
+
+                闭包分为两种闭包
+                    有效闭包
+                        外部函数将内部函数返回出去,内部函数会被外层作用域接收,此时产生的闭包就是有效闭包
+
+                    无效闭包
+                        外部函数没有将内部函数返回出去,内部函数也会创建,同时创建闭包,但是该闭包会在外部函数执行结束之后立即销毁,所以是无效闭包
+
+            2.闭包的优点
+                延长变量的生命周期
+                    变量的生命周期
+                        创建:外层函数被调用的时候,内部的代码会被进行预解析,此时会声明变量
+                        销毁:外层函数调用结束的时候,内部的变量都会销毁
+                    解释:外层函数的变量a,本应随着wrap执行结束而销毁,但是由于inner函数没有销毁,导致a变量还有人使用,所以不能销毁,最终产生了闭包
+                
+                实现js模块化
+
+            3.闭包的缺点
+                内存泄漏,内存溢出
+
+                一定会产生的现象:内存泄漏
+                可能出现的严重结果:内存溢出
+                    内存溢出,同时会导致程序宕机,最终无法执行代码
+
+            4.如何解决闭包的副作用
+                1.尽量少用
+                2.用完之后,记得及时释放无用的闭包
+                    闭包为什么不会销毁
+                        因为当前的inner函数中需要使用到这个闭包,所以垃圾回收机制认为这个闭包是有用的,不会回收
+                    
+                    inner为什么不会销毁
+                        因为当前的inner函数被result变量存储这他的引用至,所以垃圾回收机制认为这个函数是有用的,不会回收
+
+                    将内部函数的引用释放掉,让垃圾回收机制回收掉该函数,从而导致没有人使用这个闭包,导致闭包也被垃圾回收机制回收
+
+            5.闭包是什么
+                闭包是一个对象,它内部会存有当前函数需要使用的变量
+                闭包其实就是本该被销毁的变量对象,(由于被内部函数的Scopes数组引用着,导致垃圾回收机制无法回收该变量对象,导致他意外存活)
+
+            6.闭包的使用场景
+                函数节流
+                函数防抖
+
+
+
+            垃圾回收机制
+                它可以判断某个对象是否正在被其他人使用(或者说,它可以判断某个对象是否有用)
+                    如果发现没有人使用某个对象,该对象会被回收
+        */
+        // function wrap(){
+        //     var a = 2;
+        //     function inner(){
+        //         console.log(a)
+        //     }
+        //     return inner;
+        // }
+        // var result = wrap();
+        // // result();
+        // // var b = result;
+        // result = null;
+
+        
+        function wrap(){
+            var a = 1;
+            function inner1(){
+                a++;
+                console.log(a)
+            }
+            function inner2(){
+                a+=2;
+                console.log(a)
+            }
+            return {
+                inner1,
+                inner2
+            };
+        }
+        var {inner1,inner2} = wrap();
+
+        inner1();//2    2
+        inner1();//3    3
+        inner1();//4    4
+        inner1();//5    5
+
+        inner2();//3    7
+        inner2();//5    9
+        inner2();//7    11
+        inner2();//9    13
+
+        inner1 = null;
+
+        inner2();//3    15
+
+        // var b=1;
+        // function a(){
+        //     console.log(b)
+        // }
+
+        // function wrap(){
+        //     function b(){
+        //         console.log(a)
+        //     }
+        //     var a=1;
+        //     b();
+        // }
+        // wrap();
+
+        /*
+            执行上下文
+                1.执行当前函数所需要使用的内存空间
+                2.变量对象(该对象会以键值对的形式,存储当前函数内部所有的变量)
+
+                创建:
+                    每次调用函数,都会创建一个全新的执行上下文
+
+                销毁:
+                    当前函数执行结束之后,会销毁对应的执行上下文(执行上下文出栈)
+        */
+
+        // function wrap(){
+        //     var a = 1;
+        //     a++;
+        //     console.log(a)
+        // }
+
+        // wrap();
+        // wrap();
+
+        // (function(){
+        //     var data = 1;
+        //     function getData(){
+        //         console.log(data);
+        //     }
+        //     function addData(){
+        //         data++;
+        //     }
+
+        //     window.fn={
+        //         getData,
+        //         addData
+        //     }
+        // })();
+
+        // fn.addData();
+        // fn.getData();
+    </script>
+</body>
+</html>
