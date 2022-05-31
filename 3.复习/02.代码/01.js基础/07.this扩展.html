@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function fn(a, b, c) {
+            console.log(this, a, b, c);
+            return a + b + c
+        }
+
+        var obj = {
+            name: "xiaoming"
+        }
+        /*
+            借调函数->call,apply,bind
+            被借调函数->就是即将被修改this的函数
+
+            面试题:请说说call和apply的区别
+                相同点:
+                    1.都可以强行改变当前函数的this指向
+                        会将传入的第一个实参作为被借调函数的this
+
+                    2.被借调函数都会同步调用
+
+                    3.如果没有传入第一个实参,或者第一个实参的值是undefined或者null
+                        那么被借调函数的this就会是window
+
+                    4.都会将被借调函数的执行结果作为自己的返回值进行返回
+
+                不同点:
+                    1.传参的个数不同
+                        call方法 接收实参个数 0->无限大
+                            call方法会将第二个实参开始的剩余实参都传递给被借调函数,作为被借调函数的实参
+
+                        apply方法 接收实参个数 0->2 
+                            apply方法会将第二个实参进行解构操作,将解构得到的数据分别传入到被借调函数中,作为他的实参
+        
+        */
+        //    var result = fn.call(obj,1,2,3);
+
+        //    var result2 = fn.apply(obj,[1,2,3]);
+
+        //    console.log(result,result2)
+
+        // 允许使用ES6语法版本
+        // Function.prototype.myCall = function (thatThis,...args) {
+        //     // console.log(args)
+        //     /*
+        //         this->被借调函数fn
+        //         thatThis->即将作为this的对象
+        //     */
+        //     if (thatThis === undefined || thatThis === null) {
+        //         thatThis = window;
+        //     }
+
+        //     thatThis._fn = this;
+        //     var result = thatThis._fn(...args);
+        //     // this();
+
+        //     delete thatThis._fn;
+
+        //     return result;
+        // }
+
+        // 禁止使用ES6语法版本
+        // Function.prototype.myCall = function (thatThis) {
+        //     // console.log(arguments)
+        //     // console.log(([]).slice.call(arguments,1))
+        //     // console.log(Array.prototype.slice.call(arguments,1))
+        //     /*
+        //         this->被借调函数fn
+        //         thatThis->即将作为this的对象
+        //     */
+
+        //     var args = [];
+
+        //     for (var index = 1; index < arguments.length; index++) {
+        //         args.push(arguments[index])
+        //     }
+
+        //     if (thatThis === undefined || thatThis === null) {
+        //         thatThis = window;
+        //     }
+
+        //     // console.log(args.toString())
+
+        //     thatThis._fn = this;
+        //     // var result = thatThis._fn(args.toString());
+
+        //     // 'thatThis._fn('+ '1,2,3' +')'
+        //     // 'thatThis._fn(1,2,3)'
+        //     var result = eval('thatThis._fn('+args.toString()+')')
+
+        //     delete thatThis._fn;
+
+        //     return result;
+        // }
+        // var result = fn.myCall(obj,1,2,3);
+        // console.log(result)
+
+
+        /*
+            面试题:请说说call和bind的区别
+                相同点:
+                    1.传入的参数个数相同
+                        都是0到无限大
+
+                    2.都能强行改变this指向
+                        将传入的第一个实参作为被借调函数的this指向
+
+                    3.如果不传入第一个实参,或者第一个实参是undefined或者null,被借调函数的this指向就会是window
+
+
+                不同点:
+                    1.返回值不同
+                        call方法的返回值,一定是被借调函数的执行结果
+                        bind方法的返回值,一定是一个全新的函数
+
+                    2.改变this的时效问题
+                        call方法只会临时改变本轮函数执行的this指向,不会影响到后续的函数调用
+                        bind方法会永久修改返回的函数的this指向,后续不会发生变化(包括再次使用bind修改也是无效的)
+                            对原函数没有影响
+                    
+                    3.被借调函数的调用时机
+                        call方法会同步调用被借调函数
+                        bind方法会返回一个全新的函数,等待开发者调用,什么时候调用什么时候才有效果
+
+                    4.传入实参的次数不同
+                        call方法只有一次传入实参的机会,没有补救的机会
+                        bind方法具有两次传入实参的机会,
+                            第一次在调用bind的时候可以传入
+                            第二次在调用bind返回的函数的时候可以传入
+
+
+        
+        */
+
+        // fn.call(obj,1,2,3);
+        var fn1 = fn.bind(obj,1,2);
+
+        Function.prototype.myBind = function(thatThis,...args){
+            /*
+                this->被借调函数fn
+                thatThis->obj
+            
+            */
+           var that = this;
+           return function(...args2){
+                return that.call(thatThis,...args,...args2);
+           }
+        }
+        var fn1 = fn.myBind(obj,1,2);
+        console.log(fn1(5)); 
+        // fn1()
+        // fn1()
+        // fn1()
+        // fn1()
+        // fn1()
+        // fn1(3)
+
+        // fn();
+
+    </script>
+</body>
+
+</html>
