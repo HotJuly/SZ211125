@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            问题:this指向与声明位置有关,还是与调用方法有关?
+            答案:与调用方法有关,与声明位置无关
+
+            this的理解
+                this他是一个关键字
+                this其实本质就是一个变量(形参),只是该变量只能官方独享,不能我们自己声明
+
+                函数的形参,可以接受开发者调用函数时候,传入的实参数据
+                this,浏览器在函数调用的时候,会传入数据存入this变量中
+
+            常规的this指向有几种?
+                1.普通调用  ->  window
+                    语法:fn();
+                
+                2.隐式调用  ->  obj(方法前面的对象)
+                    语法:obj.fn()
+
+                    注意:无论把前面找了多少层属性,只看最终该方法是从哪个对象身上得到的即可
+
+                3.构造调用  ->  实例对象
+                    语法:new fn();
+
+                4.显式调用  ->  被指定的对象
+                    语法:.call和.apply和.bind
+
+            特殊的this指向:
+                1.事件回调函数  ->  事件源
+                2.箭头函数  ->  外层作用域的this
+                3.Vue开发中
+                    computed,watch,methods中的this都是当前组件的实例对象
+                    Vuex中.action和mutation中的this是当前的store对象
+                4.React开发中
+                    事件回调函数
+                        say(){}->this为undefined
+                        say=()=>{}->this就是当前组件实例对象
+                5.计时器
+                    回调函数中的this,是window
+
+
+            面试题:请问箭头函数能不能被call,apply,bind修改this指向?
+            答案:由于箭头函数没有自己的this,所以无法被修改
+
+            面试题2:请问箭头函数能不能构造调用?
+            答案:不能,会报错
+
+            面试题3:请问箭头函数是否具有原型对象?
+            答案:没有
+        
+        */
+
+        // function wrap(){
+        //     // console.log(this);
+        //     var that = this;
+        //     function fn(){
+        //         // console.log(this);
+        //         console.log(that===this);
+        //     }
+
+        //     fn();
+        // }
+        // wrap();
+
+        
+        // function fn(){
+        //     console.log(this);
+        // }
+
+        // var obj = {
+        //     name:"xiaoming",
+        //     fn2:{
+        //         name:"xiaowang",
+        //         fn:fn
+        //     }
+        // }
+
+        // // fn();
+        // obj.fn2.fn();
+        // a.b.c.d.e.f.g.a();
+
+        // var a = new fn();
+
+        // var obj = {
+        //     name:"xiaoming"
+        // }
+
+        // fn.call(obj)
+
+        // var fn = ()=>{
+
+        // }
+        // new fn();
+
+    </script>
+</body>
+</html>
