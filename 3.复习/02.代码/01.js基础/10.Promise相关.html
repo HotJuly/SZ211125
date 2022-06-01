@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            Promise
+                数据类型:函数
+                他接收几个实参
+                    只接收1个实参
+                    数据类型:函数(一般称为执行器函数)
+                        该执行器函数会被同步调用
+
+                执行器函数接收几个实参
+                    接收2个实参
+                        数据类型:函数
+                    分别是:
+                        resolve
+                            调用该函数,可以让p1对象状态变为成功
+                        reject
+                            调用该函数,可以让p1对象状态变为失败
+
+                        如果给以上两个函数传入实参,该数据会变为p1对象的result值
+
+                返回值:promise实例对象(简称p1)
+                        具有三种状态
+                            pending(等待)
+                            resolved(成功)
+                            rejected(失败)
+                    注意点:promise的状态是不可逆的,只能更改一次
+
+        .then
+            数据类型:函数
+            接收几个实参?
+                2个
+                数据类型:函数
+
+                第一个回调函数,是用于成功时候执行的回调函数
+                第二个回调函数,是用于失败时候执行的回调函数
+
+            用处:
+                用于监视前面的promise对象的状态变化,如果状态发生变化就会执行对应的回调函数
+
+            返回值:promise对象(简称p2)
+        
+        */
+
+        var p1 = new Promise((resolve,reject)=>{
+            // 扩展:定时器可以传入三个实参,第一个是回调函数,第二个是延迟时间,第三个实参会传递给回调函数
+            setTimeout(resolve,1000,6);
+            // setTimeout(reject,2000);
+            // resolve(123)
+            
+        })
+
+        // setTimeout(()=>{
+        //     console.log(p1)
+        // },2000)
+
+        p1.then(
+            (data)=>{
+                console.log('1',data)
+            },
+            ()=>{
+                console.log('2')
+            }
+        )
+
+
+    </script>
+</body>
+</html>
