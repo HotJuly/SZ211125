@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>上传文件</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+
+  <body>
+    <input type="file" id="uploaderInput" multiple="multiple" />
+    <div id="videoContent" style="visibility:hidden">
+      <video id="video" src="" style="width:400px" muted autoplay controls></video>
+    </div>
+    进度:
+    <div id="process">0</div>
+  </body>
+  <script src="./js/jquery-1.12.4.js"></script>
+  <script src="./js/md5.js"></script>
+  <script src="./js/axios.js"></script>
+  <script>
+    /*
+      简单思路:只需要将一个大的文件,裁剪成多个小的文件进行上传即可
+        裁剪文件的思路:
+          1.通过input的change事件中的this.files[0]可以得到用户选择的文件对象
+          2.将得到的文件对象转为base64字符串
+          3.将得到的base64字符串,进行切割,切割为多个字符串
+          4.通过多次的请求发送,将所有字符串全部发送给服务器
+    */
+
+    $('#uploaderInput').on('change',function(){
+      const file = this.files[0];
+
+      uploadOne(file);
+    })
+
+    async function uploadOne(file,index=0){
+      if(!file)return;
+
+      // 1.获取到当前文件的唯一标识(hash值)
+      const hash = await getHash(file);
+      // console.log(file)
+
+      const i = file.name.lastIndexOf('.');
+      const filename = file.name.slice(0,i) + new Date().getTime() + file.name.slice(i);
+      const size = file.size;
+      const shareSize = 2*1024*1024;
+      const total = Math.ceil(size/shareSize);
+
+      // let index = 0;
+
+      upload();
+
+      async function upload(){
+        const start = index * shareSize;
+        const end = (index + 1) * shareSize > size? size : (index + 1) * shareSize;
+
+        const data = file.slice(start,end);
+
+        const formData = new FormData();
+
+        formData.append('data',data);
+        formData.append('hash',hash);
+        formData.append('total',total);
+        formData.append('filename',filename);
+        formData.append('size',size);
+        formData.append('index',index);
+
+        const result = await axios.post('/uploadVideo',formData);
+        console.log('result',result)
+        index++;
+
+        if(index<=total-1){
+          upload();
+
+          $('#process').text(result.data.process);
+        }else{
+          $('#process').text(result.data.msg);
+          $('#videoContent').css('visibility','visible');
+          $('#video').attr('src',result.data.videoUrl);
+          
+        }
+      }
+    }
+
+    function getHash(file){
+      return new Promise((resolve)=>{
+        // 需要将File对象转为base64字符串
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        // 文件读写是很费时间的操作,所以他会是一个异步操作,只能通过load事件监视到文件是否读取结束
+
+        reader.onload=function(e){
+          // 通过e.target.result可以获取到转换之后的base64字符串
+          // console.log(e.target.result)
+
+          const hash = hex_md5(e.target.result);
+          // console.log(hash)
+
+          resolve(hash);
+        }
+      })
+    }
+  </script>
+</html>
