@@ -31,6 +31,13 @@ export default {
       // this.value = event.target.value;
       this.$emit('input9999',event.target.value)
     }
+  },
+  mounted(){
+    // 清空当前组件状态数据效果
+    // Object.assign(this.$data,this.$options.data())
+
+    // console.log(this.$parent.msg)
+    console.log(this.$props,this.$attrs)
   }
 }
 </script>
