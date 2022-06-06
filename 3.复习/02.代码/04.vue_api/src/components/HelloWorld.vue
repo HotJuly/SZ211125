@@ -1,32 +1,35 @@
 <template>
   <div class="hello">
-    <h1>{{nameCom}}</h1>
-    <h1>{{nameCom}}</h1>
-    <h1>{{nameCom}}</h1>
-    <h1>{{nameCom}}</h1>
-    <h1>{{nameCom}}</h1>
+    <!-- <input type="text" v-model="num"> -->
+    <!-- <input type="text" :value="num" @input="changeNum"> -->
+    <input type="text" :value="msg123" @input="changeMsg">
   </div>
 </template>
 
 <script>
 export default {
   name: 'HelloWorld1',
-  props: {
-    msg: String,
-    fn:Function
-  },
+  props:["value","msg123"],
   data(){
     return{
-      isShow:true,
-      obj:{
-        name:"xiaoming"
-      }
+      num:7
     }
   },
-  computed:{
-    nameCom(){
-      console.log(1)
-      return this.obj.name + "xixi";
+  model:{
+    prop:"msg123",
+    event:"input9999"
+  },
+  methods:{
+    changeNum(event){
+      // console.log(event);
+
+      // 获取当前input框最新值
+      // console.log(event.target.value);
+      this.num = event.target.value
+    },
+    changeMsg(event){
+      // this.value = event.target.value;
+      this.$emit('input9999',event.target.value)
     }
   }
 }

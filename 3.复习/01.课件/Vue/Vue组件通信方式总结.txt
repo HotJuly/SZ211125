@@ -21,4 +21,45 @@
 		小总结:子传父,是父组件将接收数据的函数传给子组件
 
 
-2.
+2.provide/inject
+	使用场景:祖孙组件通信
+	
+	流程:
+		1.祖先组件在自己的配置对象中添加配置属性provide,并将需要暴露的数据写在内部
+			provide值的数据类型是对象
+
+		2.后代组件在自己的配置对象中添加配置属性inject,将需要接收的数据名写在内部
+			inject值的数据类型是数组
+	注意点:
+		1.如果同时存在多个provide的情况下,inject查找数据的顺序类似于作用域,从内向外找
+		2.provide 和 inject 绑定并不是可响应的
+			如果需要响应式,就需要自己实现
+				可以通过Vue.observable对需要暴露的数据进行响应式的处理
+
+3.自定义事件
+
+	v-model指令(双向数据绑定)
+		用法:
+			1.对input框使用
+				1.将v-model的结果作为默认值在input框中进行展示(属性名:value)
+    					<input type="text" :value="num">
+				2.当input框中的数据发生变化的时候,会同步修改data中对应的状态数据(事件名:input事件)
+    					<input type="text" :value="num" @input="changeNum">
+
+			2.对组件使用
+				1.给子组件添加标签属性,属性名默认是value
+    					<HelloWorld :value="msg"/> 
+				2.给子组件绑定了自定义事件,用于接收子组件传递回来的数据,事件名默认是input
+    					<HelloWorld :value="msg" @input="changeMsg123"/>
+
+			扩展:
+				1.model配置属性可以自定义,父组件传下来的属性名和自定义事件名
+			
+
+
+			
+
+
+
+
+
