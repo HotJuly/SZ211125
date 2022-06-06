@@ -1,6 +1,12 @@
 import Vue from 'vue'
 import App from './App.vue'
 
+import 'element-ui/lib/theme-chalk/index.css';
+import ElementUI from 'element-ui';
+
+Vue.use(ElementUI);
+
+
 Vue.config.productionTip = false
 
 
@@ -43,6 +49,29 @@ Vue.config.devtools = true;
 
 // Vue.prototype.$bus = new Vue();
 
+// Vue.filter("timeFilter",function(val){
+//   return val+"haha"
+// })
+
+// Vue.mixin({
+//   mounted(){
+//     console.log('mixin',this.$options.name)
+//   }
+// })
+
 new Vue({
+  name:"Root",
   render: h => h(App),
 }).$mount('#app')
+
+// var res = Vue.compile('<div><span>{{ msg }}</span></div>')
+
+// // 想要将一个Vue的实例对象渲染在页面上,必须具有el属性或者$mount函数调用
+// new Vue({
+//   data: {
+//     msg: 'hello'
+//   },
+//   // el:"#app",
+//   render: res.render,
+//   staticRenderFns: res.staticRenderFns
+// }).$mount('#app')

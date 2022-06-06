@@ -1,6 +1,7 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
+  <div class="hello" v-loading="isLoading">
+    <!-- <h1>{{obj.name | timeFilter}}</h1> -->
+    <h1>{{obj.name}}</h1>
     <button v-if="isShow" @click="changeShow">添加</button>
     <input v-else ref="input666" type="text">
     <!-- <el-button>123</el-button> -->
@@ -8,15 +9,20 @@
 </template>
 
 <script>
+import loadMixins from '@/mixins/loadMixins';
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
   },
   a:3,
+  mixins:[loadMixins],
   data(){
     return{
-      isShow:true
+      isShow:true,
+      obj:{
+        name:"xiaoming"
+      }
     }
   },
   methods:{
@@ -29,7 +35,7 @@ export default {
         答案:异步更新
       */
 
-      this.isShow=false;
+      // this.isShow=false;
       // console.log(this.isShow)
       // debugger
 
@@ -38,13 +44,19 @@ export default {
       // },0)
       // nextTick的用处,就是将某一个函数等到DOM更新之后才执行
       // nextTick可以开启微任务
-      this.$nextTick(()=>{
-        console.log(1)
-        this.$refs.input666.focus();
-      })
+      // this.$nextTick(()=>{
+      //   // console.log(1)
+      //   this.$refs.input666.focus();
+      // })
 
     }
   },
+  // filters:{
+  //   timeFilter(val){
+  //     console.log(this)
+  //     return val+"haha"
+  //   }
+  // },
   mounted() {
     // console.log(a);
 
@@ -65,6 +77,37 @@ export default {
     // this.$nextTick(()=>{
     //   console.log(4);
     // })
+
+    /*
+      Vue更新视图的范围
+        最少更新一个组件
+    
+    */
+  //  this.$set(this.obj,"name",123)
+    // this.obj.name = 123;
+
+
+// 如果对响应式属性的值进行更新,如果属性值又是对象,那么该对象中的所有属性都会变为响应式属性
+    // this.obj = {
+    //   name:123
+    // }
+    // console.log(this.obj)
+    // this.isShow = false;
+
+    // this.obj.name = 123;
+    // this.isShow = false;
+
+    // setTimeout(()=>{
+
+    //   // 问题:delete关键字和$delete方法的区别
+    //   // 回答:$delete除了具有delete关键字的效果,同时还会强制页面更新一次
+    //   //    无论是不是响应式属性,都会更新一次页面
+    //   this.$delete(this.obj,"name");
+    // //   // delete this.obj.name
+    //   console.log(this.obj);
+    // },2000)
+
+    console.log(this.$options.name)
   },
 }
 </script>

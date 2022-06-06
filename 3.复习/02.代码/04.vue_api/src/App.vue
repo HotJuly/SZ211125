@@ -14,7 +14,7 @@ export default {
   },
   a:2,
   mounted() {
-    console.log('App',this);
+    // console.log('App',this);
   },
 }
 </script>
