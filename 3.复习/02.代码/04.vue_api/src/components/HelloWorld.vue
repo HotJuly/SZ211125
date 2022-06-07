@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <h2>{{msg}}</h2>
+    <h2 v-once>{{msg}}</h2>
     <button @click="clickHandler">修改父组件数据</button>
   </div>
 </template>
@@ -20,9 +20,9 @@ export default {
     //   this.$bus.$emit('sendMsg',123)
     // },1000)
 
-    this.$destroy();
-    this.clickHandler();
-    console.log('HelloWorld mounted');
+    // this.$destroy();
+    // this.clickHandler();
+    // console.log('HelloWorld mounted');
   }
 }
 </script>
