@@ -30,6 +30,11 @@
       <!-- <h1 @click="clickMe">点我放大</h1> -->
     </template>
   </HelloRefsVue>
+
+  <ul>
+    <li v-for="item in arr" :key="item">{{item}}</li>
+  </ul>
+  <button @click="changeArr">修改数据</button>
   </div>
 </template>
 
@@ -53,7 +58,8 @@ export default {
       srcList: [
         'https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg',
         'https://fuss10.elemecdn.com/1/8e/aeffeb4de74e2fde4bd74fc7b4486jpeg.jpeg'
-      ]
+      ],
+      arr:[1,2,3,4,5]
     }
   },
   mounted(){
@@ -68,6 +74,11 @@ export default {
     },
     clickHandle(){
       this.isShow=!this.isShow;
+    },
+    changeArr(){
+      // this.arr[1]=3;
+      this.arr.splice(1,1,3);
+      console.log(this.arr)
     }
   }
 }

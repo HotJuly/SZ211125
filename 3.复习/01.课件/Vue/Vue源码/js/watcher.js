@@ -1,4 +1,8 @@
 function Watcher(vm, exp, cb) {
+    // new Watcher(vm, "msg", function(value, oldValue) {
+    //     textUpdater(text节点, value, oldValue);
+    // });
+    // this->watcher对象
     this.cb = cb;
     this.vm = vm;
     this.exp = exp;
@@ -16,6 +20,7 @@ Watcher.prototype = {
         var oldVal = this.value;
         if (value !== oldVal) {
             this.value = value;
+            // this.cb.call(this.vm, "hello vue", "hello mvvm");
             this.cb.call(this.vm, value, oldVal);
         }
     },
@@ -35,14 +40,20 @@ Watcher.prototype = {
         // 触发了addDep(), 在整个forEach过程，当前wacher都会加入到每个父级过程属性的dep
         // 例如：当前watcher的是'child.child.name', 那么child, child.child, child.child.name这三个属性的dep都会加入当前watcher
         
+        
+        // watcher.addDep(dep);
         if (!this.depIds.hasOwnProperty(dep.id)) {
             this.depIds[dep.id] = dep;
-
+            // watcher.depIds["1"] = dep;
+            // watcher收集到了与他相关的dep对象
+            // 插值语法收集到了与他相关的响应式属性
 
             dep.addSub(this);
+            // dep.addSub(watcher);
         }
     },
     get: function() {
+        // Dep.target = watcher;
         Dep.target = this;
 
         var value = this.getVMVal();
@@ -56,6 +67,7 @@ Watcher.prototype = {
         var val = this.vm._data;
 
         exp.forEach(function(k) {
+            // val = _data["msg"];
             val = val[k];
         });
         return val;

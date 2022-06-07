@@ -182,8 +182,12 @@ var compileUtil = {
         // 小总结:
         // 调用一次bind就可以得到一个对应的watcher对象
         // 一个插值语法会生成一个对应的watcher对象
-        // new Watcher(vm, exp, function(value, oldValue) {
-        //     updaterFn && updaterFn(node, value, oldValue);
+        new Watcher(vm, exp, function(value, oldValue) {
+            updaterFn && updaterFn(node, value, oldValue);
+        });
+
+        // new Watcher(vm, "msg", function(value, oldValue) {
+        //     textUpdater(text节点, value, oldValue);
         // });
         
     },
@@ -243,6 +247,8 @@ var compileUtil = {
 var updater = {
     textUpdater: function(node, value) {
         // updaterFn && updaterFn(text节点, "hello mvvm");
+
+        //更新响应式属性之后的实参 node->text节点, value=>"hello vue"
 
         // text节点.textContent = typeof value == 'undefined' ? '' : value;
         node.textContent = typeof value == 'undefined' ? '' : value;
