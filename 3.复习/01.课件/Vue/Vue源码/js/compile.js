@@ -9,6 +9,7 @@ function Compile(el, vm) {
 
         this.init();
 
+        // 这就是挂载
         this.$el.appendChild(this.$fragment);
 
     }
@@ -54,20 +55,24 @@ Compile.prototype = {
             }
         });
 
+        // 第一次进入
         // [text节点,p节点,text节点].forEach(function(node) {
-        //      获取到p节点内部的文本内容
+
+        // 第二次进入
+        // [text节点].forEach(function(node) {
+            // text->"{{msg}}"
         //     var text = node.textContent;
         //     var reg = /\{\{(.*)\}\}/;
 
-        //     if (me.isElementNode(node)) {
-        //         me.compile(node);
+        //     if (com.isElementNode(node)) {
+        //         com.compile(p节点);
 
         //     } else if (me.isTextNode(node) && reg.test(text)) {
-        //         me.compileText(node, RegExp.$1);
+        //         com.compileText(text节点, "msg");
         //     }
 
-        //     if (node.childNodes && node.childNodes.length) {
-        //         me.compileElement(node);
+        //     if (p节点.childNodes && p节点.childNodes.length) {
+        //         me.compileElement(p节点);
         //     }
         // });
     },
@@ -91,9 +96,28 @@ Compile.prototype = {
                 node.removeAttribute(attrName);
             }
         });
+        // [class标签属性对象,v-on:click标签属性对象].forEach(function(attr) {
+        //     var attrName = attr.name;
+        //     if (me.isDirective(attrName)) {
+        //         exp => 'clickHandle';
+        //         var exp = attr.value;
+        //          dir => 'on:click'
+        //         var dir = attrName.substring(2);
+
+        //         if (me.isEventDirective(dir)) {
+        //             compileUtil.eventHandler(p节点, vm, 'clickHandle', 'on:click');
+        //         } else {
+        //             compileUtil[dir] && compileUtil[dir](node, me.$vm, exp);
+        //         }
+
+        //         node.removeAttribute(attrName);
+        //     }
+        // });
     },
 
     compileText: function(node, exp) {
+        // com.compileText(text节点, "msg");
+        // compileUtil.text(text节点, vm对象, "msg");
         compileUtil.text(node, this.$vm, exp);
     },
 
@@ -117,6 +141,8 @@ Compile.prototype = {
 // 指令处理集合
 var compileUtil = {
     text: function(node, vm, exp) {
+        // compileUtil.text(text节点, vm对象, "msg");
+        // this.bind(text节点, vm, "msg", 'text');
         this.bind(node, vm, exp, 'text');
     },
 
@@ -145,18 +171,26 @@ var compileUtil = {
     },
 
     bind: function(node, vm, exp, dir) {
+        // this.bind(text节点, vm, "msg", 'text');
         var updaterFn = updater[dir + 'Updater'];
+        // var updaterFn = updater['textUpdater'];
 
+        // updaterFn && updaterFn(text节点, this._getVMVal(vm, "msg"));
+        // updaterFn && updaterFn(text节点, "hello mvvm");
         updaterFn && updaterFn(node, this._getVMVal(vm, exp));
 
-        new Watcher(vm, exp, function(value, oldValue) {
-            updaterFn && updaterFn(node, value, oldValue);
-        });
+        // 小总结:
+        // 调用一次bind就可以得到一个对应的watcher对象
+        // 一个插值语法会生成一个对应的watcher对象
+        // new Watcher(vm, exp, function(value, oldValue) {
+        //     updaterFn && updaterFn(node, value, oldValue);
+        // });
         
     },
 
     // 事件处理
     eventHandler: function(node, vm, exp, dir) {
+        //compileUtil.eventHandler(p节点, vm, 'clickHandle', 'on:click');
         var eventType = dir.split(':')[1],
             fn = vm.$options.methods && vm.$options.methods[exp];
 
@@ -166,12 +200,29 @@ var compileUtil = {
     },
 
     _getVMVal: function(vm, exp) {
+        // this._getVMVal(vm, "msg")
+
         var val = vm._data;
 
+        // ["msg"]
+        // "person.name"=>["person","name"]
         exp = exp.split('.');
+
         exp.forEach(function(k) {
             val = val[k];
         });
+
+        // ["person","name"].forEach(function(k) {
+        // 第一次的val结果
+        //     val = vm._data["person"];
+
+        // 第二次的val结果
+        // 经过了数据劫持,没经过数据代理
+        //     val = vm._data["person"]["name"];
+
+        // 以下写法才会经过数据代理,但是Vue没这么写
+        //     val = vm["person"]["name"];
+        // });
         return val;
     },
 
@@ -191,6 +242,9 @@ var compileUtil = {
 
 var updater = {
     textUpdater: function(node, value) {
+        // updaterFn && updaterFn(text节点, "hello mvvm");
+
+        // text节点.textContent = typeof value == 'undefined' ? '' : value;
         node.textContent = typeof value == 'undefined' ? '' : value;
     },
 
