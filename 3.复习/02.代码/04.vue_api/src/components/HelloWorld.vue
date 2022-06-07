@@ -1,43 +1,28 @@
 <template>
   <div class="hello">
-    <!-- <input type="text" v-model="num"> -->
-    <!-- <input type="text" :value="num" @input="changeNum"> -->
-    <input type="text" :value="msg123" @input="changeMsg">
+    <h2>{{msg}}</h2>
+    <button @click="clickHandler">修改父组件数据</button>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld1',
-  props:["value","msg123"],
-  data(){
-    return{
-      num:7
-    }
-  },
-  model:{
-    prop:"msg123",
-    event:"input9999"
-  },
+  name: 'HelloWorld',
+  props:["msg"],
   methods:{
-    changeNum(event){
-      // console.log(event);
-
-      // 获取当前input框最新值
-      // console.log(event.target.value);
-      this.num = event.target.value
-    },
-    changeMsg(event){
-      // this.value = event.target.value;
-      this.$emit('input9999',event.target.value)
+    clickHandler(){
+      this.$emit('update:msg','我是子组件传递的数据')
     }
   },
   mounted(){
-    // 清空当前组件状态数据效果
-    // Object.assign(this.$data,this.$options.data())
+    // console.log('HelloWorld mounted');
+    // setTimeout(()=>{
+    //   this.$bus.$emit('sendMsg',123)
+    // },1000)
 
-    // console.log(this.$parent.msg)
-    console.log(this.$props,this.$attrs)
+    this.$destroy();
+    this.clickHandler();
+    console.log('HelloWorld mounted');
   }
 }
 </script>

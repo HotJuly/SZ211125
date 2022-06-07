@@ -9,7 +9,7 @@
       :title="title"
     >
       <el-button v-bind="$attrs" v-on="$listeners" slot="reference">删除</el-button>
-      <!-- <el-button :type="type" :size="size" @click1="clickHandler2" @click="clickHandler" slot="reference">删除</el-button> -->
+      <!-- <el-button :type="type" :size="size" @click2="clickHandler2" @click="clickHandler" slot="reference">删除</el-button> -->
     </el-popconfirm>
   </div>
 </template>

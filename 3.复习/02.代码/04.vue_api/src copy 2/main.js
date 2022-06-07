@@ -4,8 +4,6 @@ import App from './App.vue'
 import 'element-ui/lib/theme-chalk/index.css';
 import ElementUI from 'element-ui';
 
-import HelloWorld from '@/components/HelloWorld';
-
 Vue.use(ElementUI);
 
 
@@ -25,8 +23,6 @@ Vue.config.productionTip = false
 
 */
 
-Vue.prototype.$bus = new Vue();
-
 new Vue({
   name:"Root",
   el:"#app",
@@ -37,15 +33,3 @@ new Vue({
   template:"<h1>{{msg2}}</h1>",
   render: h => h(App),
 })
-
-
-// const HelloWorldFn = Vue.extend(HelloWorld);
-// // console.log(result);
-
-// const instance = new HelloWorldFn();
-// // console.log(instance);
-
-// const reuslt = instance.$mount();
-// // console.log(reuslt);
-
-// document.body.appendChild(reuslt.$el);
