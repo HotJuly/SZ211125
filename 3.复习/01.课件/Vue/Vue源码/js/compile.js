@@ -1,4 +1,6 @@
 function Compile(el, vm) {
+    // this->com对象,el->"#app",vm->vm
+
     this.$vm = vm;
     this.$el = this.isElementNode(el) ? el : document.querySelector(el);
 
@@ -14,10 +16,13 @@ function Compile(el, vm) {
 
 Compile.prototype = {
     node2Fragment: function(el) {
+        // el->#app元素
         var fragment = document.createDocumentFragment(),
             child;
 
         while (child = el.firstChild) {
+            // 将#app元素内部所有的直系子节点全部放入文档碎片对象中
+            // 说白了就是被抄家了
             fragment.appendChild(child);
         }
 
@@ -29,6 +34,7 @@ Compile.prototype = {
     },
 
     compileElement: function(el) {
+        // 获取当前元素内部所有子节点组成的伪数组
         var childNodes = el.childNodes,
             me = this;
 
@@ -47,6 +53,23 @@ Compile.prototype = {
                 me.compileElement(node);
             }
         });
+
+        // [text节点,p节点,text节点].forEach(function(node) {
+        //      获取到p节点内部的文本内容
+        //     var text = node.textContent;
+        //     var reg = /\{\{(.*)\}\}/;
+
+        //     if (me.isElementNode(node)) {
+        //         me.compile(node);
+
+        //     } else if (me.isTextNode(node) && reg.test(text)) {
+        //         me.compileText(node, RegExp.$1);
+        //     }
+
+        //     if (node.childNodes && node.childNodes.length) {
+        //         me.compileElement(node);
+        //     }
+        // });
     },
 
     compile: function(node) {
