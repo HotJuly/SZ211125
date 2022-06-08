@@ -16,6 +16,8 @@ function MVVM(options) {
 
     this.$options = options;
 
+    // 这里就是beforeCreate的执行时机
+
     var data = this._data = this.$options.data;
     // var data = (this._data = this.$options.data);
     // var data = (this.$options.data);
@@ -161,6 +163,8 @@ function MVVM(options) {
     */
     observe(data, this);
     // observe(vm._data, vm);
+
+    // 此处就是created的执行时机
     
 
     /*

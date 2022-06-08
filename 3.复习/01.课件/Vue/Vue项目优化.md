@@ -76,11 +76,11 @@ beforeDestory() {
   - core-js: 在@babel/preset-env基础上，增加了useBuiltIns: 'usage'来实现按需打包
 - CSS  
   - postcss-loader  
-  
+
   - 内部使用autoprefixer插件, 给C3样式自动添加厂商前缀
-  
+
     ![preview](https://segmentfault.com/img/remote/1460000014782566/view)
-  
+
   - 在package.json中指定browserslist来指示postcss-loader兼容性做到什么程度
 
 #### 2) 拆分打包与压缩
