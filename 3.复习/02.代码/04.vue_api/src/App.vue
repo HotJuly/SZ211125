@@ -2,7 +2,9 @@
   <div id="app">
     App
     <router-view/>
-    <router-link to="/about">toAbout</router-link>
+    <router-link to="/about">
+      toAbout
+    </router-link>
     <!-- <router-link to="/home">toHome</router-link> -->
     <button @click="toHome">toHome</button>
   </div>
