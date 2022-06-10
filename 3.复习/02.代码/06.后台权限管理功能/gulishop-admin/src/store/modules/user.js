@@ -2,6 +2,7 @@ import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter , constantRoutes, asyncRoutes , anyRoutes } from '@/router'
 import filterAsyncRoutes from '@/utils/filterAsyncRoutes';
+import mapButtons from '@/utils/mapButtons';
 
 const getDefaultState = () => {
   return {
@@ -14,7 +15,11 @@ const getDefaultState = () => {
 
     // 用于解决左侧列表显示错误问题,
     // 该数组中存储当前项目能访问的所有路由信息
-    routes:[]
+    routes:[],
+
+    // 用于存储当前用户能够使用的按钮权限
+    // buttons:[]
+    buttons:{}
   }
 }
 
@@ -35,6 +40,9 @@ const mutations = {
   },
   SET_PERMISSION: (state, data) => {
     state.routeNames = data.routes;
+
+    state.buttons = mapButtons(data.buttons);
+
     // asyncRoutes
     // 该方法用于过滤现有的异步路由,得到一个全新的数组,该数组中只有当前账号可以访问的异步路由
     const newAsyncRoutes = filterAsyncRoutes(asyncRoutes,data.routes);

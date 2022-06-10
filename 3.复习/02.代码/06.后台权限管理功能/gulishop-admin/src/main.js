@@ -29,6 +29,18 @@ Vue.prototype.$API = API;
 //   }
 // }
 
+Vue.directive( "has-permission", {
+  inserted(el,{value}){
+    // console.log(el,value)
+    // const result = store.state.user.buttons.includes(value);
+    const result = store.state.user.buttons[value];
+    if(!result){
+      // 如果用户没有该按钮的权限,就会进入到当前判断
+      el.parentNode.removeChild(el);
+    }
+  }
+})
+
 import '@/icons' // icon
 import '@/permission' // permission control
 
