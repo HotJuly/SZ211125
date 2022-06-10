@@ -1,96 +1,79 @@
-let b: boolean = true;
-b = false;
+(function(){
 
-// b = 123;
+    // class Person{
+    //     public name:string;
+    //     protected phone:number;
+    //     private age:number;
 
-let num: number = 123;
-num=8;
-// num="aaa";
+    //     constructor(name:string,age:number,phone:number){
+    //         this.name = name;
+    //         this.age = age;
+    //         this.phone = phone;
+    //     }
 
-let str: string = "abc";
-// str=1;
+    //     say(content){
+    //         console.log(content);
+    //         console.log(this.age);
+    //     }
+    // }
 
-let un:undefined = undefined;
+    // class Student extends Person{
+    //     readonly price:number;
 
-let nu:null = null;
+    //     constructor(name:string,age:number,phone:number,price:number){
+    //         super(name,age,phone);
+    //         this.price = price;
+    //     }
 
-un=null;
+    //     sayAge(){
+    //         // console.log(this.age);
+    //         console.log(this.phone)
+    //     }
+    // }
+    
 
-nu=undefined;
+    // const s1 = new Student("xiaoming",18,177777777,1);
 
-/*null和undefined在非严格模式下,他们属于所有类型的子类型 */
-str = null;
-str = undefined;
-
-let arr: number[] = [1,2,3]
-let arr2: Array<number> = [1,2,3]
-
-arr.push(2);
-// arr.push("2");
-
-// 元组就是约定了长度和类型的数组
-let arr3: [number,boolean,string] = [1,true,"abc"]
-// arr3[0]=true;
-// arr3[4]=false;
-
-let obj: object = {
-    name:"123",
-    age:23
-}
-// obj = 2;
-
-let data: any = 1;
-data="str"
-data=true
-
-// let vo:void =1;
-
-function fn(data):void {
-    console.log(data)
-}
-// fn()
-
-// console.log(b);
-
-enum City{
-    "北京"="bj",
-    "上海"="sh",
-    "深圳"="sz"
-}
-
-console.log(City);
-
-let obj1 = {
-    name:"xiaoming",
-    city:City["上海"]
-}
-// City["武汉"]
-console.log(obj1);
+    // console.log(s1.name);
+    // console.log(s1.age);
+    // console.log(s1.phone);
+    // s1.price += 1000;
 
 
-// 联合类型
-let data2:number|string =123;
-data2="str";
-// data2=true;
+    // interface IPerson{
+    //     eat:(food:string)=>void
+    // }
 
-// 类型断言
-// 需求:现在该函数接收一个数据,如果是字符串就打印他的length属性,如果是数字就输出该数字
-function getType(value:number|string){
-    if((value as string).length){
-        // 能进入这里就说明当前是字符串
-        return (<string>value).length;
-    }else{
-        // 能进入这里就说明当前是数字
-        return value;
+    abstract class A{
+        abstract eat:(food:string)=>void;
+
+        sayTitle(title){
+            console.log(title);
+        }
     }
-}
+    
+    class Person extends A{
+        public name:string;
+        protected phone:number;
+        private age:number;
 
-getType(1);
-getType("abc");
-// getType(true);
+        constructor(name:string,age:number,phone:number){
+            super();
+            this.name = name;
+            this.age = age;
+            this.phone = phone;
+        }
 
-// 类型推断
-// let data3 = 123;
-let data3;
-data3 = 123;
-data3 = true;
+        say(content){
+            console.log(content);
+            console.log(this.age);
+        }
+
+        eat=function(food:string){
+            console.log(food);
+        }
+    }
+
+    const p1 = new Person('xiaoming',23,19999);
+    p1.sayTitle("hello")
+})();
