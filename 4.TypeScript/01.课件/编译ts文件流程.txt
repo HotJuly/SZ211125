@@ -1,0 +1,33 @@
+1.全局安装TypeScript
+	npm i -g typescript
+
+2.编译TS代码方法
+	方法一(最少):
+		使用tsc指令编译指定文件,会在同路径下获得编译结果
+			tsc ./index.ts
+
+	方法二(中等):
+		使用VSCODE编译指定文件
+			1.初始化ts配置文件(得到tsconfig.json)
+				tsc -init
+			2.修改配置文件
+				将outDir属性打开,该属性代表输出文件的路径
+				将"strict"属性关闭,该属性代表严格模式
+			3.运行任务
+				VSCODE->终端->运行任务->typescript->tsc:监视
+
+	方法三(最高):
+		使用脚手架配置编译ts文件
+			1.复制脚手架配置,并下载依赖包
+				npm i
+			2.初始化ts配置文件(得到tsconfig.json)
+				tsc -init
+			3.修改配置文件
+				将outDir属性打开,该属性代表输出文件的路径
+				将"strict"属性关闭,该属性代表严格模式
+			4.创建src,public文件夹,以及内部文件
+				src->main.ts
+				public->index.html
+			5.运行脚手架
+				npm start
+				
