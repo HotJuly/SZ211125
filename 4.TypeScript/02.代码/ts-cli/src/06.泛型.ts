@@ -134,6 +134,7 @@
   interface IT{
     length:number;
   }
+  
   function fn<T extends IT>(x:T): void {
     console.log(x.length)
   }
