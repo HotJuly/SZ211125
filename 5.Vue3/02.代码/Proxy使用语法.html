@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            data={
+                msg:"hello mvvm",
+                person:{
+                    name:"小明",
+                    msg:"hello vue"
+                }
+            }
+
+            // 会产生一个dep对象
+            const num = ref(2);
+
+            // 此处会产生两个dep对象
+            const obj = reactive(data)
+
+        
+        */
+        // 这个就是元对象
+        const obj = {
+            name:"xiaoming",
+            age:23
+        }
+
+        const proxyObj = new Proxy(obj,{
+            set(target,key,value){
+                // console.log('set success',target,key,value);
+                // target[key] = value;
+                Reflect.set(target,key,value);
+
+                // 调用dep.notify()通知视图更新
+            },
+            get(target,key){
+                // console.log('get success',target,key);
+                // return target[key]
+                return Reflect.get(target,key);
+            },
+            deleteProperty(target,key){
+                // console.log('deleteProperty success');
+                // delete target[key]
+                Reflect.deleteProperty(target,key);
+
+                // 调用dep.notify()通知视图更新
+            },
+            has(){
+                return false;
+            },
+            getPrototypeOf(){
+                return {
+                    name:"我是老王"
+                }
+            }
+        })
+
+        proxyObj.name = "xiaohong"
+        // obj.name = "xiaohong"
+        // proxyObj.sex = "男"
+        // console.log(obj.name);
+        // delete proxyObj.name;
+        // console.log("age" in proxyObj);
+        // console.log(Object.getPrototypeOf(proxyObj))
+
+        console.log(obj,proxyObj);
+    </script>
+</body>
+</html>

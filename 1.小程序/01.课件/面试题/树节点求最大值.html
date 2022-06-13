@@ -23,11 +23,29 @@
                     }]
                 },
                 {
-                    value: 4,
+                    value: 7,
                 }
             ]
         }
 
+        function getMaxValue(tree){
+            let max = tree.value;
+
+            function getValue(tree){
+                tree.children?.forEach((node)=>{
+                    if(node.children&&node.value){
+                        max = max<node.value?node.value:max;
+                        getValue(node)
+                    }
+                })
+            }
+
+            getValue(tree);
+            return max;
+        }
+
+        const result = getMaxValue(tree);
+        console.log(result);
     </script>
 </body>
 
